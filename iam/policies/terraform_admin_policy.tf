@@ -35,7 +35,10 @@ resource "aws_iam_policy" "terraform_admin_policy" {
                 "iam:UpdateLoginProfile",
                 "iam:ListPolicyVersions",
                 "iam:CreatePolicyVersion",
-                "iam:DeletePolicyVersion"
+                "iam:DeletePolicyVersion",
+                "iam:CreateAccessKey",
+                "iam:ListAccessKeys",
+                "iam:DeleteAccessKey"
             ],
             "Resource": "*"
         },

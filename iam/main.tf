@@ -2,6 +2,8 @@
 variable "region" {}
 variable "access_key" {}
 variable "secret_key" {}
+variable "vault_address" {}
+variable "vault_token" {}
 
 provider "aws" {
   # These variables accessed via tfvar files in the root directory
@@ -13,6 +15,8 @@ provider "aws" {
 # Manage IAM users
 module "iam_users" {
   source = "./users"
+  vault_address = var.vault_address
+  vault_token = var.vault_token
 }
 
 # Manage IAM groups

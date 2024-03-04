@@ -3,7 +3,7 @@ variable "groups" {
   default = [
     "terraform_admin_group",
     "terraform_thisper_group",
-    "terraform_thiea_group",
+    "terraform_theia_group",
     "terraform_bmt_group",
     "terraform_real-estate_group",
   ]
