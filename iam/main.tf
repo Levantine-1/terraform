@@ -4,6 +4,7 @@ variable "access_key" {}
 variable "secret_key" {}
 variable "vault_address" {}
 variable "vault_token" {}
+variable "aws_account_id" {}
 
 provider "aws" {
   # These variables accessed via tfvar files in the root directory
@@ -27,6 +28,8 @@ module "iam_groups" {
 # Manage IAM policies
 module "iam_policies" {
   source = "./policies"
+  aws_account_id = var.aws_account_id
+  region = var.region
 }
 
 # Note, due to some kind of race condition group associations may not be created or destroyed properly

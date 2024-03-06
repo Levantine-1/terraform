@@ -4,6 +4,7 @@ variable "secret_key" {}
 variable "environment" {}
 variable "vault_address" {}
 variable "vault_token" {}
+variable "aws_account_id" {}
 
 #provider "aws" {
 #  # These variables accessed via tfvar files in the root directory
@@ -28,6 +29,7 @@ module "iam_resources" {
   secret_key = var.secret_key
   vault_address = var.vault_address
   vault_token = var.vault_token
+  aws_account_id = var.aws_account_id
 }
 
 # Setup S3 resources

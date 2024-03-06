@@ -1,3 +1,7 @@
+# NOTE: Terraform does not allow string interpolation of resource names, so we have to hard code
+# names here. This is not ideal, but it is the only way I could figure out how to do it.
+# Just use find and replace tools to change the name of the policy, group, and attachment.
+
 resource "aws_iam_policy" "terraform_admin_policy" {
   name        = "terraform_admin_policy"
   description = "Policy for terraform admin to bootstrap and manage basic AWS resources"

@@ -2,7 +2,7 @@ variable "user_group_associations" {
   description = "Map of user names to a list of group names."
   type        = map(list(string))
   default     = {
-    # <USER> = ["<GROUP>", "<GROUP>", ...]
+    # <USER> = ["<GROUP1>", "<GROUP2>", "<GROUPX", ...]
     terraform_admin       = ["terraform_admin_group"],
     terraform_thisper     = ["terraform_thisper_group"],
     terraform_theia       = ["terraform_theia_group"],
