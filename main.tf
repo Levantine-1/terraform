@@ -20,29 +20,20 @@ provider "aws" {
 
 provider "vault" {
   address = var.vault_address
-  token = var.vault_token
+  token   = var.vault_token
 }
+
 
 data "vault_generic_secret" "aws_creds" {
-  path = "secret/aws/iam_access_keys/terraform_admin"
-}
-
-variable "aws_access_key" {
-  # default = "<access_key>" # NOTE: Use this if vault is unavailable. DO NOT USE FOR PRODUCTION!
-  default = data.vault_generic_secret.aws_creds.data["access_key"]
-}
-
-variable "aws_secret_key" {
-  # default = "<secret_key>" # NOTE: Use this if vault is unavailable. DO NOT USE FOR PRODUCTION!
-  default = data.vault_generic_secret.aws_creds.data["secret_key"]
+  path = "kv/aws/iam_access_keys/terraform_admin"
 }
 
 # Setup IAM resources
 module "iam_resources" {
   source = "./iam"
   region = var.region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  access_key = try(data.vault_generic_secret.aws_creds.data["access_key"], null)
+  secret_key = try(data.vault_generic_secret.aws_creds.data["secret_key"], null)
   vault_address = var.vault_address
   vault_token = var.vault_token
   aws_account_id = var.aws_account_id
@@ -52,7 +43,7 @@ module "iam_resources" {
 module "s3_resources" {
   source = "./s3"
   region = var.region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  access_key = try(data.vault_generic_secret.aws_creds.data["access_key"], null)
+  secret_key = try(data.vault_generic_secret.aws_creds.data["secret_key"], null)
   environment = var.environment
 }
