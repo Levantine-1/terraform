@@ -32,7 +32,7 @@ provider "vault" {
 resource "vault_generic_secret" "store_access_keys_in_vault" {
   for_each = aws_iam_access_key.create_access_keys
 
-  path = "secret/aws/iam_access_keys/${each.value.user}"  # Use a specific path for each access key
+  path = "kv/aws/iam_access_keys/${each.value.user}"  # Use a specific path for each access key
   data_json = <<EOT
 {
   "access_key": "${each.value.id}",
