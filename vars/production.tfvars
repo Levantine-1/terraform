@@ -1,7 +1,6 @@
 environment = "production"
 
 # AWS Configs
-aws_account_id = "975050308029"
 region = "us-west-2"
 
 # HashiCorp Vault Configs
