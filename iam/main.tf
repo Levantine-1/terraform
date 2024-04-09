@@ -1,23 +1,9 @@
 # Load IAM resources from separate files
 variable "region" {}
-variable "access_key" {}
-variable "secret_key" {}
-variable "vault_address" {}
-variable "vault_token" {}
-variable "aws_account_id" {}
-
-provider "aws" {
-  # These variables accessed via tfvar files in the root directory
-  region = var.region
-   access_key = var.access_key
-   secret_key = var.secret_key
-}
 
 # Manage IAM users
 module "iam_users" {
   source = "./users"
-  vault_address = var.vault_address
-  vault_token = var.vault_token
 }
 
 # Manage IAM groups
@@ -25,11 +11,16 @@ module "iam_groups" {
   source = "./groups"
 }
 
+data "aws_caller_identity" "current" {}
+locals {
+    account_id = data.aws_caller_identity.current.account_id
+}
+
 # Manage IAM policies
 module "iam_policies" {
   source = "./policies"
-  aws_account_id = var.aws_account_id
   region = var.region
+  aws_account_id = local.account_id
 }
 
 # Note, due to some kind of race condition group associations may not be created or destroyed properly

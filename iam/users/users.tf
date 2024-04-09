@@ -1,6 +1,4 @@
 # Define IAM users
-variable "vault_address" {}
-variable "vault_token" {}
 
 variable "users" {
   type    = list(string)
@@ -21,11 +19,6 @@ resource "aws_iam_user" "create_users" {
 resource "aws_iam_access_key" "create_access_keys" {
   for_each = aws_iam_user.create_users
   user     = each.value.name
-}
-
-provider "vault" {
-  address = var.vault_address
-  token   = var.vault_token
 }
 
 # Store IAM access keys into Vault

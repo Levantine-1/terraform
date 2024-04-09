@@ -1,4 +1,4 @@
-# Define variables global to all modules here
-# Variables come from the tfvars file that is in scope of the main.tf in the root of the project
+# NOTE: These are global variables for all templates under the policies director
+
 variable "region" {}
 variable "aws_account_id" {}
