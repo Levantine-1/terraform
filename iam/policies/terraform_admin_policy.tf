@@ -59,8 +59,14 @@ resource "aws_iam_policy" "terraform_admin_policy" {
                 "s3:*"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:*"
+            ],
+            "Resource": "*"
         }
-
     ]
 }
 EOF

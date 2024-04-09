@@ -2,6 +2,7 @@ variable "region" {}
 variable "environment" {}
 variable "vault_address" {}
 variable "vault_token" {}
+variable "levantine_io_hosted_zone_id" {}
 
 # NOTE: For some reason the IDE wants me to define the access keys for each of the modules.
 # So for now I'll put them in there though I'd prefer they'd use the global ones.
@@ -36,7 +37,7 @@ data "vault_generic_secret" "aws_delegation_creds" {
 
 provider "aws" {
   # NOTE: The delegation account is used for DNS subdomain delegation between the root account and the subdomain account
-  alias = "delegation"
+  alias = "delegate"
   region = var.region
   access_key = try(data.vault_generic_secret.aws_creds.data["access_key"], null)
   secret_key = try(data.vault_generic_secret.aws_creds.data["secret_key"], null)
@@ -54,4 +55,15 @@ module "s3_resources" {
   source = "./s3"
   region = var.region
   environment = var.environment
+}
+
+# Setup Route53 resources
+module "route53_resources" {
+  providers = {
+    aws = aws.delegate
+  }
+  source = "./route53"
+  region = var.region
+  environment = var.environment
+  levantine_io_hosted_zone_id =  var.levantine_io_hosted_zone_id
 }
