@@ -31,19 +31,6 @@ provider "aws" {
   secret_key = try(data.vault_generic_secret.aws_creds.data["secret_key"], null)
 }
 
-data "vault_generic_secret" "aws_delegation_creds" {
-  path = "kv/aws/iam_access_keys/subdomain_delegation"
-}
-
-provider "aws" {
-  # NOTE: The delegation account is used for DNS subdomain delegation between the root account and the subdomain account
-  alias = "delegate"
-  region = var.region
-  access_key = try(data.vault_generic_secret.aws_creds.data["access_key"], null)
-  secret_key = try(data.vault_generic_secret.aws_creds.data["secret_key"], null)
-}
-
-
 # Setup IAM resources
 module "iam_resources" {
   source = "./iam"
@@ -59,9 +46,6 @@ module "s3_resources" {
 
 # Setup Route53 resources
 module "route53_resources" {
-  providers = {
-    aws = aws.delegate
-  }
   source = "./route53"
   region = var.region
   environment = var.environment

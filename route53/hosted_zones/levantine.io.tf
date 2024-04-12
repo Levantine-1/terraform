@@ -5,9 +5,8 @@ resource "aws_route53_zone" "levantine_io" {
   name = "${var.environment}.levantine.io"
 }
 
-
 resource "aws_route53_record" "configure_subdomain_delegation" {
-  providers = "delegate"
+  provider = aws.delegate
   allow_overwrite = true
   name            = "${var.environment}.levantine.io"
   ttl             = 300
