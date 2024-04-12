@@ -42,7 +42,8 @@ resource "aws_iam_policy" "terraform_admin_policy" {
                 "iam:DeletePolicyVersion",
                 "iam:CreateAccessKey",
                 "iam:ListAccessKeys",
-                "iam:DeleteAccessKey"
+                "iam:DeleteAccessKey",
+                "iam:*"
             ],
             "Resource": "*"
         },
@@ -56,11 +57,21 @@ resource "aws_iam_policy" "terraform_admin_policy" {
                 "s3:PutBucketPolicy",
                 "s3:GetBucketPolicy",
                 "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+                "s3:ListBucketVersions",
                 "s3:*"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:*"
+            ],
+            "Resource": "*"
         }
-
     ]
 }
 EOF
