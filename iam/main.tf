@@ -8,6 +8,7 @@ module "iam_users" {
 
 # Manage IAM groups
 module "iam_groups" {
+  depends_on = [module.iam_users]
   source = "./groups"
 }
 
@@ -18,6 +19,7 @@ locals {
 
 # Manage IAM policies
 module "iam_policies" {
+  depends_on = [module.iam_groups]
   source = "./policies"
   region = var.region
   aws_account_id = local.account_id
@@ -30,5 +32,6 @@ module "iam_policies" {
 
 # Associate users with groups
 module "group_memberships" {
+  depends_on = [module.iam_groups, module.iam_users]
   source = "./group_memberships"
 }
