@@ -39,6 +39,7 @@ module "iam_resources" {
 
 # Setup S3 resources
 module "s3_resources" {
+  depends_on = [module.iam_resources]
   source = "./s3"
   region = var.region
   environment = var.environment
@@ -50,4 +51,10 @@ module "route53_resources" {
   region = var.region
   environment = var.environment
   levantine_io_hosted_zone_id =  var.levantine_io_hosted_zone_id
+}
+
+# Setup EC2 resources
+module "ec2_resources" {
+  depends_on = [module.iam_resources]
+  source = "./ec2"
 }
