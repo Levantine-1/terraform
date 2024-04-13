@@ -7,6 +7,7 @@ resource "aws_instance" "bastion_instance" {
   tags = {
     Name = "Bastion"
   }
+  user_data = file("${path.module}/scripts/user_data.sh")
 }
 
 resource "aws_eip" "bastion_instance_eip" {
