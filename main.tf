@@ -3,6 +3,7 @@ variable "environment" {}
 variable "vault_address" {}
 variable "vault_token" {}
 variable "levantine_io_hosted_zone_id" {}
+variable "nhitruong_com_hosted_zone_id" {}
 
 # NOTE: For some reason the IDE wants me to define the access keys for each of the modules.
 # So for now I'll put them in there though I'd prefer they'd use the global ones.
@@ -51,6 +52,7 @@ module "route53_resources" {
   region = var.region
   environment = var.environment
   levantine_io_hosted_zone_id =  var.levantine_io_hosted_zone_id
+  nhitruong_com_hosted_zone_id = var.nhitruong_com_hosted_zone_id
 }
 
 # Setup EC2 resources

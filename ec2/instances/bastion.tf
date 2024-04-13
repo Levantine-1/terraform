@@ -16,9 +16,17 @@ resource "aws_eip" "bastion_instance_eip" {
   }
 }
 
-resource "aws_route53_record" "configure_bastion_r53_record" {
+resource "aws_route53_record" "configure_bastion_r53_record_levantine_io" {
   zone_id = data.aws_route53_zone.levantine_io_tld.zone_id
   name    = "bastion.${var.environment}.levantine.io"
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.bastion_instance_eip.public_ip]
+}
+
+resource "aws_route53_record" "configure_bastion_r53_record_nhitruong_com" {
+  zone_id = data.aws_route53_zone.nhitruong_com_tld.zone_id
+  name    = "bastion.${var.environment}.nhitruong.com"
   type    = "A"
   ttl     = 300
   records = [aws_eip.bastion_instance_eip.public_ip]

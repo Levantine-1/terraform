@@ -16,6 +16,10 @@ data "aws_route53_zone" "levantine_io_tld" {
   name = "${var.environment}.levantine.io"
 }
 
+data "aws_route53_zone" "nhitruong_com_tld" {
+  name = "${var.environment}.nhitruong.com"
+}
+
 ################ Security Groups ################
 # NOTE: The "name" values for these security groups are the name values
 # defined for them in the templates under terraform/ec2/security_groups
