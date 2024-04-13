@@ -1,4 +1,5 @@
 resource "aws_security_group" "sg_http" {
+  # Make sure the name of the security groups are added to the variables file under terraform/ec2/instances/variables.tf
   name        = "http_https"
   description = "HTTP Traffic on Port 80 and HTTPS Traffic on Port 443"
 

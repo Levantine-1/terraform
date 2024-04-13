@@ -1,4 +1,5 @@
 resource "aws_security_group" "sg_ssh" {
+  # Make sure the name of the security groups are added to the variables file under terraform/ec2/instances/variables.tf
   name        = "ssh"
   description = "SSH Traffic"
 
