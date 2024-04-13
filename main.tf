@@ -57,4 +57,5 @@ module "route53_resources" {
 module "ec2_resources" {
   depends_on = [module.iam_resources]
   source = "./ec2"
+  environment = var.environment
 }

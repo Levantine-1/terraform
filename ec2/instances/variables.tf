@@ -1,3 +1,5 @@
+variable "environment" {}
+
 data "aws_vpc" "default_vpc" {
   default = true
 }
@@ -9,8 +11,9 @@ data "aws_subnets" "default_subnets"  {
   }
 }
 
-output "default_subnets" {
-  value = data.aws_subnets.default_subnets.ids
+################ Route 53 Stuff ################
+data "aws_route53_zone" "levantine_io_tld" {
+  name = "${var.environment}.levantine.io"
 }
 
 ################ Security Groups ################

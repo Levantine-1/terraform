@@ -11,4 +11,15 @@ resource "aws_instance" "bastion_instance" {
 
 resource "aws_eip" "bastion_instance_eip" {
   instance = aws_instance.bastion_instance.id
+  tags = {
+    Name = "Bastion"
+  }
+}
+
+resource "aws_route53_record" "configure_bastion_r53_record" {
+  zone_id = data.aws_route53_zone.levantine_io_tld.zone_id
+  name    = "bastion.${var.environment}.levantine.io"
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.bastion_instance_eip.public_ip]
 }

@@ -12,3 +12,10 @@ provider "aws" {
   access_key = try(data.vault_generic_secret.aws_delegation_creds.data["access_key"], null)
   secret_key = try(data.vault_generic_secret.aws_delegation_creds.data["secret_key"], null)
 }
+
+data "aws_eip" "bastion_eip" {
+  filter {
+    name   = "tag:Name"
+    values = ["Bastion"]
+  }
+}

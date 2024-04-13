@@ -1,4 +1,5 @@
 # Load IAM resources from separate files
+variable "environment" {}
 
 # Add a default key for ansible to bootstrap later
 resource "aws_key_pair" "automation_key_pair" {
@@ -13,4 +14,5 @@ module "aws_security_groups" {
 module "aws_ec2" {
   depends_on = [module.aws_security_groups]
   source = "./instances"
+  environment = var.environment
 }
