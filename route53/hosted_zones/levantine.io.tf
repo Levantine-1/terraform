@@ -22,18 +22,6 @@ resource "aws_route53_record" "configure_subdomain_delegation_levantine_io" {
   ]
 }
 
-# Only create this Address Record in the prod environment
-resource "aws_route53_record" "create_prod_redirect_record_levantine_io" {
-  provider = aws.delegate
-  count   = var.environment == "prod" ? 1 : 0
-  name    = "levantine.io"
-  zone_id = var.levantine_io_hosted_zone_id
-  type    = "A"
-  ttl     = 300
-  records = [data.aws_eip.bastion_eip.public_ip]
-}
-
-
 #################### ALL RECORDS BELOW SHOULD BE IN THE ACCOUNT THAT HOSTS THIS ENVIRONMENT ####################
 
 ## This record is now defined in the file that creates the instance

@@ -32,3 +32,25 @@ resource "aws_route53_record" "configure_bastion_r53_record_nhitruong_com" {
   ttl     = 300
   records = [aws_eip.bastion_instance_eip.public_ip]
 }
+
+# Only create this Address Record in the prod environment
+resource "aws_route53_record" "create_prod_redirect_record_levantine_io" {
+  provider = aws.delegate
+  count   = var.environment == "prod" ? 1 : 0
+  name    = "levantine.io"
+  zone_id = var.levantine_io_hosted_zone_id
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.bastion_instance_eip.public_ip]
+}
+
+# Only create this Address Record in the prod environment
+resource "aws_route53_record" "create_prod_redirect_record_nhitruong_com" {
+  provider = aws.delegate
+  count   = var.environment == "prod" ? 1 : 0
+  name    = "nhitruong.com"
+  zone_id = var.nhitruong_com_hosted_zone_id
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.bastion_instance_eip.public_ip]
+}

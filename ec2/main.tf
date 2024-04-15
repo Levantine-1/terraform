@@ -1,5 +1,8 @@
 # Load IAM resources from separate files
 variable "environment" {}
+variable "region" {}
+variable "nhitruong_com_hosted_zone_id" {}
+variable "levantine_io_hosted_zone_id" {}
 
 # Add a default key for ansible to bootstrap later
 resource "aws_key_pair" "automation_key_pair" {
@@ -12,7 +15,9 @@ module "aws_security_groups" {
 }
 
 module "aws_ec2" {
-  depends_on = [module.aws_security_groups]
   source = "./instances"
   environment = var.environment
+  region = var.region
+  nhitruong_com_hosted_zone_id = var.nhitruong_com_hosted_zone_id
+  levantine_io_hosted_zone_id = var.levantine_io_hosted_zone_id
 }

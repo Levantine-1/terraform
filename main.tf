@@ -57,7 +57,9 @@ module "route53_resources" {
 
 # Setup EC2 resources
 module "ec2_resources" {
-  depends_on = [module.iam_resources]
   source = "./ec2"
   environment = var.environment
+  region = var.region
+  levantine_io_hosted_zone_id =  var.levantine_io_hosted_zone_id
+  nhitruong_com_hosted_zone_id = var.nhitruong_com_hosted_zone_id
 }
