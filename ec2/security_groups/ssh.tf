@@ -10,4 +10,11 @@ resource "aws_security_group" "sg_ssh" {
     cidr_blocks = ["76.102.71.37/32", "204.102.74.33/32"]
     # [ "House internet" , "Chinatown Library SF" ]
   }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
 }

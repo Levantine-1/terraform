@@ -16,4 +16,11 @@ resource "aws_security_group" "sg_wireguard" {
     protocol    = "udp"
     cidr_blocks = ["76.102.71.37/32"]
   }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
 }
