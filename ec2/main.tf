@@ -14,6 +14,15 @@ module "aws_security_groups" {
   source = "./security_groups"
 }
 
+# 2024-04-17
+# NOTE: Due to some jank in the variables.tf file, if you're running this for a new/empty env you'll need to:
+# 1: Comment out the EC2 module
+# 2: Run the terraform
+# 3: Then uncomment the EC2 module
+# 4: Run terraform again.
+# This is because the hosted zone ids and security group IDs are not available until the first run.
+# IDK, go easy on me ¯\_(ツ)_/¯  This is my first time using really Terraform
+
 module "aws_ec2" {
   source = "./instances"
   environment = var.environment
