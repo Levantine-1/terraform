@@ -41,7 +41,8 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
                 "route53:ListHostedZones",
                 "route53:GetHostedZone",
                 "route53:ListTagsForResource",
-                "route53:ChangeResourceRecordSets"
+                "route53:ChangeResourceRecordSets",
+                "route53:GetChange"
             ],
             "Resource": "*"
         }
