@@ -21,9 +21,15 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
                 "ecr:DescribeImages",
                 "ecr:GetDownloadUrlForLayer",
                 "ecr:ListTagsForResource",
-                "ecr:GetAuthorizationToken"
             ],
             "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/thisper"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
         },
         {
             "Effect": "Allow",
