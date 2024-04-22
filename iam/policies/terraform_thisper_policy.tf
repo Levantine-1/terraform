@@ -27,7 +27,7 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeInstances",
-                "ec2:DescribeInstanceTypes","
+                "ec2:DescribeInstanceTypes",
                 "ec2:DescribeVolumes"
             ],
             "Resource": "*"
