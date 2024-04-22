@@ -19,9 +19,33 @@ resource "aws_iam_policy" "terraform_bmt_policy" {
                 "ecr:BatchDeleteImage",
                 "ecr:BatchGetImage",
                 "ecr:DescribeImages",
-                "ecr:GetDownloadUrlForLayer"
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:ListTagsForResource"
             ],
             "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/bmt"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceTypes",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeInstanceCreditSpecifications"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones",
+                "route53:GetHostedZone",
+                "route53:ListTagsForResource",
+                "route53:ChangeResourceRecordSets",
+                "route53:GetChange",
+                "route53:ListResourceRecordSets"
+            ],
+            "Resource": "*"
         }
     ]
 }
