@@ -22,6 +22,20 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
                 "ecr:GetDownloadUrlForLayer"
             ],
             "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/thisper"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones"
+            ],
+            "Resource": "*"
         }
     ]
 }
