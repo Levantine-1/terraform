@@ -26,14 +26,16 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
         {
             "Effect": "Allow",
             "Action": [
-                "ec2:DescribeInstances"
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceTypes"
             ],
             "Resource": "*"
         },
         {
             "Effect": "Allow",
             "Action": [
-                "route53:ListHostedZones"
+                "route53:ListHostedZones",
+                "route53:GetHostedZone"
             ],
             "Resource": "*"
         }
