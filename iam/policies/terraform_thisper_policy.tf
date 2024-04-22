@@ -28,7 +28,8 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
             "Action": [
                 "ec2:DescribeInstances",
                 "ec2:DescribeInstanceTypes",
-                "ec2:DescribeVolumes"
+                "ec2:DescribeVolumes",
+                "ec2:DescribeInstanceAttribute"
             ],
             "Resource": "*"
         },
