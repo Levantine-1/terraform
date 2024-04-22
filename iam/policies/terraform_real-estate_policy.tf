@@ -20,7 +20,7 @@ resource "aws_iam_policy" "terraform_real-estate_policy" {
                 "ecr:BatchGetImage",
                 "ecr:DescribeImages",
                 "ecr:GetDownloadUrlForLayer",
-                "ecr:ListTagsForResource",
+                "ecr:ListTagsForResource"
             ],
             "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/real-estate"
         },
