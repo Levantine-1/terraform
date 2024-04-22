@@ -19,7 +19,8 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
                 "ecr:BatchDeleteImage",
                 "ecr:BatchGetImage",
                 "ecr:DescribeImages",
-                "ecr:GetDownloadUrlForLayer"
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:ListTagsForResource"
             ],
             "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/thisper"
         },
@@ -39,7 +40,8 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
             "Action": [
                 "route53:ListHostedZones",
                 "route53:GetHostedZone",
-                "route53:ListTagsForResource"
+                "route53:ListTagsForResource",
+                "route53:ChangeResourceRecordSets"
             ],
             "Resource": "*"
         }
