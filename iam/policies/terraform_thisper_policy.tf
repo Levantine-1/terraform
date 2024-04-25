@@ -23,7 +23,8 @@ resource "aws_iam_policy" "terraform_thisper_policy" {
                 "ecr:ListTagsForResource",
                 "ecr:InitiateLayerUpload",
                 "ecr:UploadLayerPart",
-                "ecr:CompleteLayerUpload"
+                "ecr:CompleteLayerUpload",
+                "ecr:BatchCheckLayerAvailability"
             ],
             "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/thisper"
         },
