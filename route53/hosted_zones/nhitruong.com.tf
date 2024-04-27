@@ -32,3 +32,11 @@ resource "aws_route53_record" "configure_subdomain_delegation_nhitruong_com" {
 #   ttl     = 300
 #   records = ["54.187.93.242"]
 # }
+
+resource "aws_route53_record" "vmwarebastion_vpn_nhitruong_com" {
+  zone_id = aws_route53_zone.nhitruong_com.zone_id
+  name = "vmwarebastion.vpn.nhitruong.com"
+  type = "A"
+  ttl = 300
+  records = ["10.0.0.3"]
+}

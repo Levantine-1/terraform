@@ -32,3 +32,11 @@ resource "aws_route53_record" "configure_subdomain_delegation_levantine_io" {
 #   ttl     = 300
 #   records = ["54.187.93.242"]
 # }
+
+resource "aws_route53_record" "vmwarebastion_vpn_levantine_io" {
+  zone_id = aws_route53_zone.levantine_io.zone_id
+  name = "vmwarebastion.vpn.levantine.io"
+  type = "A"
+  ttl = 300
+  records = ["10.0.0.3"]
+}
