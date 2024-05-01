@@ -26,7 +26,7 @@ resource "aws_iam_policy" "terraform_bmt_policy" {
                 "ecr:CompleteLayerUpload",
                 "ecr:BatchCheckLayerAvailability"
             ],
-            "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/bmt"
+            "Resource": "arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/booking-movie-ticket"
         },
         {
             "Effect": "Allow",
