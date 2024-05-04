@@ -57,8 +57,16 @@ resource "aws_iam_policy" "terraform_real-estate_policy" {
                 "route53:ListResourceRecordSets"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:*",
+                "ecs:*",
+                "elasticloadbalancing:*",
+            ],
+              "Resource": "*"
         }
-    ]
 }
 
 EOF
