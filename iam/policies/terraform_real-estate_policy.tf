@@ -63,7 +63,8 @@ resource "aws_iam_policy" "terraform_real-estate_policy" {
             "Action": [
                 "ec2:*",
                 "ecs:*",
-                "elasticloadbalancing:*"
+                "elasticloadbalancing:*",
+                "iam:*"
             ],
               "Resource": "*"
         }
