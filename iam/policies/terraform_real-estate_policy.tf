@@ -67,6 +67,7 @@ resource "aws_iam_policy" "terraform_real-estate_policy" {
             ],
               "Resource": "*"
         }
+    ]
 }
 
 EOF
