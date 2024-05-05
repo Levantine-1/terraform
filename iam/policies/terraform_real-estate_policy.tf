@@ -67,7 +67,8 @@ resource "aws_iam_policy" "terraform_real-estate_policy" {
                 "iam:*",
                 "route53:*",
                 "s3:*",
-                "cloudfront:*"
+                "cloudfront:*",
+                "acm:*"
             ],
               "Resource": "*"
         }
