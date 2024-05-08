@@ -6,7 +6,7 @@ variable "groups" {
     "terraform_theia_group",
     "terraform_bmt_group",
     "terraform_real-estate_group",
-    "terraform_portfolio"
+    "terraform_portfolio_group"
   ]
 }
 
