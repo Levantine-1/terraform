@@ -6,7 +6,8 @@ variable "users" {
              "terraform_thisper",
              "terraform_theia",
              "terraform_bmt",
-             "terraform_real-estate"
+             "terraform_real-estate",
+             "terraform_portfolio"
     ]
 }
 
