@@ -3,12 +3,12 @@ variable "user_group_associations" {
   type        = map(list(string))
   default     = {
     # <USER> = ["<GROUP1>", "<GROUP2>", "<GROUPX", ...]
-    terraform_admin       = ["terraform_admin_group"],
-    terraform_thisper     = ["terraform_thisper_group"],
-    terraform_theia       = ["terraform_theia_group"],
-    terraform_bmt         = ["terraform_booking-movie-ticket_group"],
-    terraform_real-estate = ["terraform_real-estate_group"],
-    terraform_portfolio   = ["terraform_portfolio_group"]
+    terraform_admin                 = ["terraform_admin_group"],
+    terraform_thisper               = ["terraform_thisper_group"],
+    terraform_theia                 = ["terraform_theia_group"],
+    terraform_booking-movie-ticket  = ["terraform_booking-movie-ticket_group"],
+    terraform_real-estate           = ["terraform_real-estate_group"],
+    terraform_portfolio             = ["terraform_portfolio_group"]
     # Add more user-group associations as needed
   }
 }
