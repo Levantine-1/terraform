@@ -40,3 +40,13 @@ resource "aws_route53_record" "vmwarebastion_vpn_levantine_io" {
   ttl = 300
   records = ["10.0.0.3"]
 }
+
+# This record is for the legacy "theia" project. Theia will not be receiving the CICD treatment so for now this is manually in here
+resource "aws_route53_record" "configure_theia_r53_levantine_record" {
+  provider = aws.delegate
+  zone_id = var.levantine_io_hosted_zone_id
+  name    = "theia.levantine.io"
+  type    = "A"
+  ttl     = 300
+  records = ["54.187.93.242"]
+}
