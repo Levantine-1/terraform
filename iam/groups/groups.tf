@@ -4,7 +4,7 @@ variable "groups" {
     "terraform_admin_group",
     "terraform_thisper_group",
     "terraform_theia_group",
-    "terraform_bmt_group",
+    "terraform_booking-movie-ticket_group",
     "terraform_real-estate_group",
     "terraform_portfolio_group"
   ]

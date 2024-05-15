@@ -5,7 +5,7 @@ variable "users" {
   default = ["terraform_admin",
              "terraform_thisper",
              "terraform_theia",
-             "terraform_bmt",
+             "terraform_booking-movie-ticket",
              "terraform_real-estate",
              "terraform_portfolio"
     ]
