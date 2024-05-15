@@ -6,7 +6,9 @@ variable "groups" {
     "terraform_theia_group",
     "terraform_booking-movie-ticket_group",
     "terraform_real-estate_group",
-    "terraform_portfolio_group"
+    "terraform_portfolio_group",
+    "terraform_dental-care_group",
+    "terraform_education-platform_group"
   ]
 }
 

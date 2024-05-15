@@ -7,7 +7,9 @@ variable "users" {
              "terraform_theia",
              "terraform_booking-movie-ticket",
              "terraform_real-estate",
-             "terraform_portfolio"
+             "terraform_portfolio",
+             "terraform_dental-care",
+             "terraform_education-platform"
     ]
 }
 
