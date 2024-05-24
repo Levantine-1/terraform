@@ -9,7 +9,8 @@ variable "users" {
              "terraform_real-estate",
              "terraform_portfolio",
              "terraform_dental-care",
-             "terraform_education-platform"
+             "terraform_education-platform",
+             "terraform_pet-care"
     ]
 }
 

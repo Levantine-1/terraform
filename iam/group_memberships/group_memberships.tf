@@ -10,7 +10,8 @@ variable "user_group_associations" {
     terraform_real-estate           = ["terraform_real-estate_group"],
     terraform_portfolio             = ["terraform_portfolio_group"],
     terraform_dental-care           = ["terraform_dental-care_group"],
-    terraform_education-platform    = ["terraform_education-platform_group"]
+    terraform_education-platform    = ["terraform_education-platform_group"],
+    terraform_pet-care              = ["terraform_pet-care_group"]
     # Add more user-group associations as needed
   }
 }

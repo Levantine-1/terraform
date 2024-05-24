@@ -8,7 +8,8 @@ variable "groups" {
     "terraform_real-estate_group",
     "terraform_portfolio_group",
     "terraform_dental-care_group",
-    "terraform_education-platform_group"
+    "terraform_education-platform_group",
+    "terraform_pet-care_group"
   ]
 }
 
