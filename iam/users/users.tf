@@ -10,7 +10,8 @@ variable "users" {
              "terraform_portfolio",
              "terraform_dental-care",
              "terraform_education-platform",
-             "terraform_pet-care"
+             "terraform_pet-care",
+             "terraform_datagateway"
     ]
 }
 
