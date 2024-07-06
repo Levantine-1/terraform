@@ -7,8 +7,24 @@ resource "aws_security_group" "sg_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["76.102.71.37/32", "204.102.74.33/32"]
-    # [ "House internet" , "Chinatown Library SF" ]
+    cidr_blocks = ["76.102.71.37/32"]
+    description = "House internet"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["204.102.74.33/32"]
+    description = "Chinatown Library SF"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["204.102.74.56/32"]
+    description = "North Beach Library SF"
   }
 
   egress {
