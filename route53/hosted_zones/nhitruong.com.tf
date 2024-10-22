@@ -48,5 +48,5 @@ resource "aws_route53_record" "configure_theia_r53_nhitruong_record" {
   name    = "theia.nhitruong.com"
   type    = "A"
   ttl     = 300
-  records = ["52.35.190.70"]
+  records = ["54.70.96.91"]
 }
