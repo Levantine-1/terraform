@@ -11,7 +11,8 @@ variable "users" {
              "terraform_dental-care",
              "terraform_education-platform",
              "terraform_pet-care",
-             "terraform_datagateway"
+             "terraform_datagateway",
+             "terraform_processmining"
     ]
 }
 

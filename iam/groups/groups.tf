@@ -10,7 +10,8 @@ variable "groups" {
     "terraform_dental-care_group",
     "terraform_education-platform_group",
     "terraform_pet-care_group",
-    "terraform_datagateway_group"
+    "terraform_datagateway_group",
+    "terraform_processmining_group"
   ]
 }
 
