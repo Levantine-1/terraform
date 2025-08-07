@@ -12,7 +12,8 @@ variable "user_group_associations" {
     terraform_dental-care           = ["terraform_dental-care_group"],
     terraform_education-platform    = ["terraform_education-platform_group"],
     terraform_pet-care              = ["terraform_pet-care_group"],
-    terraform_datagateway           = ["terraform_datagateway_group"]
+    terraform_datagateway           = ["terraform_datagateway_group"],
+    terraform_processmining         = ["terraform_processmining_group"],
     # Add more user-group associations as needed
   }
 }
