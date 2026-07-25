@@ -25,31 +25,12 @@ resource "aws_route53_record" "configure_bastion_r53_record_levantine_io" {
   records = [aws_eip.bastion_instance_eip.public_ip]
 }
 
-resource "aws_route53_record" "configure_bastion_r53_record_nhitruong_com" {
-  zone_id = data.aws_route53_zone.nhitruong_com_tld.zone_id
-  name    = "bastion.${var.environment}.nhitruong.com"
-  type    = "A"
-  ttl     = 300
-  records = [aws_eip.bastion_instance_eip.public_ip]
-}
-
 # Only create this Address Record in the prod environment, this is so that we can redirect the root domain to the bastion in the prod account
 resource "aws_route53_record" "create_prod_redirect_record_levantine_io" {
   provider = aws.delegate
   count   = var.environment == "prod" ? 1 : 0
   name    = "levantine.io"
   zone_id = var.levantine_io_hosted_zone_id
-  type    = "A"
-  ttl     = 300
-  records = [aws_eip.bastion_instance_eip.public_ip]
-}
-
-# Only create this Address Record in the prod environment
-resource "aws_route53_record" "create_prod_redirect_record_nhitruong_com" {
-  provider = aws.delegate
-  count   = var.environment == "prod" ? 1 : 0
-  name    = "nhitruong.com"
-  zone_id = var.nhitruong_com_hosted_zone_id
   type    = "A"
   ttl     = 300
   records = [aws_eip.bastion_instance_eip.public_ip]

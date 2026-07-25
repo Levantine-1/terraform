@@ -10,4 +10,3 @@ vault_token = "<token>"
 
 # Hosted zone IDs of the root account for subdomain delegation for this account
 levantine_io_hosted_zone_id = "Z32CDTOFAQVLJJ"
-nhitruong_com_hosted_zone_id = "Z2QFXIQOJMZTAV"

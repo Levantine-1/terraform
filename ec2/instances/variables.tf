@@ -1,5 +1,4 @@
 variable "environment" {}
-variable "nhitruong_com_hosted_zone_id" {}
 variable "levantine_io_hosted_zone_id" {}
 
 data "aws_vpc" "default_vpc" {
@@ -16,10 +15,6 @@ data "aws_subnets" "default_subnets"  {
 ################ Route 53 Stuff ################
 data "aws_route53_zone" "levantine_io_tld" {
   name = "${var.environment}.levantine.io"
-}
-
-data "aws_route53_zone" "nhitruong_com_tld" {
-  name = "${var.environment}.nhitruong.com"
 }
 
 ################ Security Groups ################
