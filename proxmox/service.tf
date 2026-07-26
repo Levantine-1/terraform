@@ -24,7 +24,7 @@ resource "proxmox_virtual_environment_vm" "service" {
 
   disk {
     datastore_id = "SSD1TB"
-    file_id      = proxmox_virtual_environment_download_file.debian_cloud_image.id
+    file_id      = proxmox_download_file.debian_cloud_image.id
     interface    = "scsi0"
     size         = 16
     file_format  = "raw"

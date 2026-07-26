@@ -1,7 +1,7 @@
 # Shared base image for every VM in this fleet -- downloaded fresh by
 # terraform rather than depending on some pre-existing local file, so a
 # from-scratch rebuild doesn't need any manual staging on the Proxmox host.
-resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
+resource "proxmox_download_file" "debian_cloud_image" {
   content_type = "iso"
   datastore_id = "local"
   node_name    = var.proxmox_node
