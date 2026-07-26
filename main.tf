@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket       = "prod-levantine-terraform-bucket"
+    key          = "terraform.tfstate"
+    region       = "us-west-2"
+    use_lockfile = true
+  }
+}
+
 variable "region" {}
 variable "environment" {}
 variable "vault_address" {}
