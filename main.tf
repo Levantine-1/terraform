@@ -22,8 +22,9 @@ variable "levantine_io_hosted_zone_id" {}
 # the keys generated when the users are created are stored and retrieved from vault.
 
 provider "vault" {
-  address = var.vault_address
-  token   = var.vault_token
+  address           = var.vault_address
+  token             = var.vault_token
+  skip_child_token  = true
 }
 
 data "vault_generic_secret" "aws_creds" {
