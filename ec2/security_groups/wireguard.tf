@@ -7,14 +7,14 @@ resource "aws_security_group" "sg_wireguard" {
     from_port   = 51820
     to_port     = 51820
     protocol    = "tcp"
-    cidr_blocks = ["67.170.192.40/32"]
+    cidr_blocks = ["0.0.0.0/0"] # WireGuard's own handshake is the security boundary, not source IP -- needs to be reachable from anywhere
   }
 
     ingress {
     from_port   = 51820
     to_port     = 51820
     protocol    = "udp"
-    cidr_blocks = ["67.170.192.40/32"]
+    cidr_blocks = ["0.0.0.0/0"] # WireGuard's own handshake is the security boundary, not source IP -- needs to be reachable from anywhere
   }
 
   egress {
