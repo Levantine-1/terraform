@@ -83,6 +83,12 @@ resource "proxmox_virtual_environment_vm" "vms" {
   lifecycle {
     ignore_changes = [
       network_device[0].mac_address,
+      # These VMs' disks predate this module (weren't created by terraform),
+      # so imported state has no file_id -- ignoring it stops terraform
+      # trying to "fix" that by destroying and recreating the disk. Only
+      # affects updates to the existing disk; a genuinely fresh VM created
+      # by this resource still gets file_id at creation time as normal.
+      disk[0].file_id,
     ]
   }
 }

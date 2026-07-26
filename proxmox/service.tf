@@ -77,6 +77,12 @@ resource "proxmox_virtual_environment_vm" "service" {
     ignore_changes = [
       network_device[0].mac_address,
       network_device[1].mac_address,
+      # This VM's disk wasn't created by terraform (predates this module),
+      # so imported state has no file_id -- ignoring it stops terraform
+      # trying to "fix" that by destroying and recreating the disk. Only
+      # affects updates to the existing disk; a genuinely fresh VM created
+      # by this resource still gets file_id at creation time as normal.
+      disk[0].file_id,
     ]
   }
 }
