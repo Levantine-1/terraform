@@ -6,12 +6,7 @@ variable "user_group_associations" {
     terraform_admin                 = ["terraform_admin_group"],
     terraform_thisper               = ["terraform_thisper_group"],
     terraform_theia                 = ["terraform_theia_group"],
-    terraform_booking-movie-ticket  = ["terraform_booking-movie-ticket_group"],
-    terraform_real-estate           = ["terraform_real-estate_group"],
     terraform_portfolio             = ["terraform_portfolio_group"],
-    terraform_dental-care           = ["terraform_dental-care_group"],
-    terraform_education-platform    = ["terraform_education-platform_group"],
-    terraform_pet-care              = ["terraform_pet-care_group"],
     terraform_datagateway           = ["terraform_datagateway_group"],
     terraform_processmining         = ["terraform_processmining_group"],
     # Add more user-group associations as needed

@@ -36,7 +36,7 @@ resource "aws_route53_record" "create_prod_redirect_record_levantine_io" {
   records = [aws_eip.bastion_instance_eip.public_ip]
 }
 
-# Create a record to resolve splunk server to a VPN IP because that splunk server lives on premise
+# Splunk now lives directly on the internal LAN (post-Proxmox migration), no longer needs the WireGuard overlay IP
 resource "aws_route53_record" "create_splunk_vpn_record" {
   provider = aws.delegate
   count   = var.environment == "prod" ? 1 : 0
@@ -44,5 +44,5 @@ resource "aws_route53_record" "create_splunk_vpn_record" {
   zone_id = var.levantine_io_hosted_zone_id
   type    = "A"
   ttl     = 300
-  records = ["10.0.0.2"]
+  records = ["192.168.1.21"]
 }
