@@ -23,6 +23,13 @@ resource "aws_iam_access_key" "create_access_keys" {
 }
 
 # Store IAM access keys into Vault
+# NOTE: AWS never returns an access key's secret after creation, so this only
+# works when terraform itself creates the key in the same apply (secret is
+# known from the create response). It can't be `terraform import`-ed for a
+# pre-existing key -- each.value.secret comes back null and this resource
+# has to be `terraform state rm`'d rather than imported during reconciliation,
+# leaving the existing (correct) Vault secret alone rather than risk
+# overwriting it with a null value. Fine again on a genuine fresh apply.
 resource "vault_generic_secret" "store_access_keys_in_vault" {
   for_each = aws_iam_access_key.create_access_keys
 
