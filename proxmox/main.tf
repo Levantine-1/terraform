@@ -1,0 +1,39 @@
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "bpg/proxmox"
+      version = "~> 0.66"
+    }
+  }
+}
+
+variable "proxmox_endpoint" {
+  default = "https://10.69.69.139:8006/"
+}
+
+variable "proxmox_node" {
+  default = "pve"
+}
+
+# Same automation user/key every host in this fleet already trusts
+# (matches aws_key_pair.automation_key_pair in the ec2 module)
+variable "automation_ssh_public_key" {
+  default = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAlK9SYgHttisI9NMozvE0HNroEK2bBG406szUfIGz1Xq+CGTdW1x197nBh36zqa5gYbhQCM/uGKOaGCPB+6R6gW0CpaHjPvcKW+pKAUaEWkQzeRYaS1yEJjD4Fh+DFqgaYKh+VTCH7RC2c6N+YdKKJkaSan2iaI9Z5nLjAxJloepbJBTDnhPQVasqNUykh6ZbYyYM5p3EEhYPrw5bMZJJkyHV44UexfqBmroSgbA87PtyUw/+9T9aG3yYwtAafUZJlZpWbeHdMRW/SVYmt/wCze5x+IAxqjk+48b8HeltR5Nys33VSQybuKNrcnumDNzthLFMQvF4ABO66yCTQ5NaBQ== automation"
+}
+
+# Proxmox token is stored in Vault (kv/data/proxmox/api_token), same pattern
+# as the AWS credentials -- the vault_token var/provider is inherited from
+# the root module.
+data "vault_generic_secret" "proxmox_token" {
+  path = "kv/proxmox/api_token"
+}
+
+provider "proxmox" {
+  endpoint  = var.proxmox_endpoint
+  api_token = "${data.vault_generic_secret.proxmox_token.data["token_id"]}=${data.vault_generic_secret.proxmox_token.data["token_secret"]}"
+  insecure  = true
+
+  ssh {
+    agent = false
+  }
+}

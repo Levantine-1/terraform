@@ -70,3 +70,8 @@ module "ec2_resources" {
   region = var.region
   levantine_io_hosted_zone_id =  var.levantine_io_hosted_zone_id
 }
+
+# Setup Proxmox VMs
+module "proxmox_resources" {
+  source = "./proxmox"
+}
