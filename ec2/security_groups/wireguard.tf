@@ -7,14 +7,14 @@ resource "aws_security_group" "sg_wireguard" {
     from_port   = 51820
     to_port     = 51820
     protocol    = "tcp"
-    cidr_blocks = ["76.102.71.37/32"]
+    cidr_blocks = ["67.170.192.40/32"]
   }
 
     ingress {
     from_port   = 51820
     to_port     = 51820
     protocol    = "udp"
-    cidr_blocks = ["76.102.71.37/32"]
+    cidr_blocks = ["67.170.192.40/32"]
   }
 
   egress {

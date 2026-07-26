@@ -7,7 +7,7 @@ resource "aws_security_group" "sg_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["76.102.71.37/32"]
+    cidr_blocks = ["67.170.192.40/32"]
     description = "House internet"
   }
 
