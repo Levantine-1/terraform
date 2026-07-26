@@ -23,21 +23,27 @@ resource "aws_iam_access_key" "create_access_keys" {
 }
 
 # Store IAM access keys into Vault
-# NOTE: AWS never returns an access key's secret after creation, so this only
-# works when terraform itself creates the key in the same apply (secret is
-# known from the create response). It can't be `terraform import`-ed for a
-# pre-existing key -- each.value.secret comes back null and this resource
-# has to be `terraform state rm`'d rather than imported during reconciliation,
-# leaving the existing (correct) Vault secret alone rather than risk
-# overwriting it with a null value. Fine again on a genuine fresh apply.
-resource "vault_generic_secret" "store_access_keys_in_vault" {
-  for_each = aws_iam_access_key.create_access_keys
-
-  path = "kv/aws/iam_access_keys/${each.value.user}"  # Use a specific path for each access key
-  data_json = <<EOT
-{
-  "access_key": "${each.value.id}",
-  "secret_key": "${each.value.secret}"
-}
-EOT
-}
+# NOTE: 2026-07-26 commented out during state reconciliation. AWS never
+# returns an access key's secret after creation, so `each.value.secret` is
+# only non-null when terraform creates the key in the very same apply that
+# creates this resource. For every currently-existing access key (imported
+# into state, not created by this apply), secret is permanently null --
+# leaving this resource active makes every `terraform plan` fail (or, if
+# someone forced past that, would try to overwrite the real working Vault
+# secrets with null/empty data on apply). The real secrets are already
+# correct in Vault from original creation; nothing needs this resource to
+# run right now. Re-enable it (with a null-guard, e.g. `try()`, and ideally
+# a way to distinguish "just-created" from "pre-existing" keys) before it's
+# needed again, e.g. for a genuinely fresh IAM user creation.
+#
+# resource "vault_generic_secret" "store_access_keys_in_vault" {
+#   for_each = aws_iam_access_key.create_access_keys
+#
+#   path = "kv/aws/iam_access_keys/${each.value.user}"  # Use a specific path for each access key
+#   data_json = <<EOT
+# {
+#   "access_key": "${each.value.id}",
+#   "secret_key": "${each.value.secret}"
+# }
+# EOT
+# }
