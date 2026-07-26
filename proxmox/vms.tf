@@ -23,6 +23,7 @@ resource "proxmox_virtual_environment_vm" "vms" {
   name      = each.key
   node_name = var.proxmox_node
   vm_id     = each.value.vm_id
+  on_boot   = false
 
   agent {
     enabled = false

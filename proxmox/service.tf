@@ -7,6 +7,7 @@ resource "proxmox_virtual_environment_vm" "service" {
   name      = "service"
   node_name = var.proxmox_node
   vm_id     = 103
+  on_boot   = false
 
   agent {
     enabled = false
