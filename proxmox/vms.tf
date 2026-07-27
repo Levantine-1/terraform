@@ -14,6 +14,11 @@ locals {
     kube-c-00     = { vm_id = 112, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.80/24" }
     kube-w-00     = { vm_id = 113, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.90/24" }
     kube-w-01     = { vm_id = 114, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.91/24" }
+    # theia was an ESXi-imported disk with no install automation; now a
+    # fresh cloud-init VM provisioned by roles/applications/theia/install.yml.
+    # Bumped to 16G from its original 10G since it's a fresh build anyway
+    # (MariaDB + RabbitMQ + app need more headroom than the original had).
+    theia         = { vm_id = 200, cores = 1, memory = 2048, disk_size = 16, ip_address = "192.168.1.30/24" }
   }
 }
 
