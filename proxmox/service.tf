@@ -93,6 +93,13 @@ resource "proxmox_virtual_environment_vm" "service" {
       # affects updates to the existing disk; a genuinely fresh VM created
       # by this resource still gets file_id at creation time as normal.
       disk[0].file_id,
+      # Purely cosmetic: the provider wants to write computed defaults
+      # (timeout/trim/type) into state for this already-matching block.
+      # Not worth it -- any apply against this resource stops the VM
+      # (confirmed: even this no-op diff triggered a stop/start), which
+      # wipes non-persistent DNS/hosts state and forces a re-run of
+      # configure_DNS_Resolver.yml + configureHostFile.yml to recover.
+      agent,
     ]
   }
 }
