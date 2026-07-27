@@ -28,12 +28,22 @@ data "vault_generic_secret" "proxmox_token" {
   path = "kv/proxmox/api_token"
 }
 
+# The provider needs direct node SSH access too: some disk operations (e.g.
+# converting a downloaded image onto LVM-backed storage like SSD1TB, which
+# isn't file-based) have no Proxmox API equivalent, so the provider falls
+# back to SSH-ing into the node itself.
+data "vault_generic_secret" "proxmox_node_ssh" {
+  path = "kv/proxmox/node_ssh"
+}
+
 provider "proxmox" {
   endpoint  = var.proxmox_endpoint
   api_token = "${data.vault_generic_secret.proxmox_token.data["token_id"]}=${data.vault_generic_secret.proxmox_token.data["token_secret"]}"
   insecure  = true
 
   ssh {
-    agent = false
+    agent    = false
+    username = data.vault_generic_secret.proxmox_node_ssh.data["username"]
+    password = data.vault_generic_secret.proxmox_node_ssh.data["password"]
   }
 }
