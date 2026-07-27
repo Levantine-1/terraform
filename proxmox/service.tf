@@ -1,9 +1,17 @@
 # service is the control plane -- terraform, ansible, and this whole repo
 # clone live here. It's deliberately the only VM with no dependencies on
-# anything else in this config, and dual-NIC like jenkins (net0 external
-# static on vmbr0, net1 internal static on vmbr1) so it's directly reachable
-# from outside the internal VM LAN without needing another host as a relay
-# hop -- this is what makes it viable as the control plane/orchestrator.
+# anything else in this config, and dual-NIC like jenkins (net0 external on
+# vmbr0, net1 internal static on vmbr1) so it's directly reachable from
+# outside the internal VM LAN without needing another host as a relay hop --
+# this is what makes it viable as the control plane/orchestrator.
+#
+# net0 is left on dhcp (not pinned like jenkins' static 10.69.69.20)
+# deliberately: this VM already has cloud-init network management disabled
+# (99-disable-network-config.cfg, from the cloud-init-reset incident), so a
+# declared ip_config here is never actually applied by the guest -- it would
+# just be permanent drift in terraform's view of reality. If a stable
+# address is needed later, set a DHCP static reservation for this VM's MAC
+# on the router/OPNsense instead of fighting cloud-init here.
 resource "proxmox_virtual_environment_vm" "service" {
   name      = "service"
   node_name = var.proxmox_node
@@ -55,8 +63,7 @@ resource "proxmox_virtual_environment_vm" "service" {
 
     ip_config {
       ipv4 {
-        address = "10.69.69.21/24"
-        gateway = "10.69.69.1"
+        address = "dhcp"
       }
     }
 
