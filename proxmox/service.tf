@@ -1,8 +1,9 @@
 # service is the control plane -- terraform, ansible, and this whole repo
 # clone live here. It's deliberately the only VM with no dependencies on
-# anything else in this config, and the only dual-NIC host (net0 external/
-# DHCP on vmbr0, net1 internal static on vmbr1) since it needs to be
-# reachable both from the internal LAN and directly for WireGuard/bootstrap.
+# anything else in this config, and dual-NIC like jenkins (net0 external
+# static on vmbr0, net1 internal static on vmbr1) so it's directly reachable
+# from outside the internal VM LAN without needing another host as a relay
+# hop -- this is what makes it viable as the control plane/orchestrator.
 resource "proxmox_virtual_environment_vm" "service" {
   name      = "service"
   node_name = var.proxmox_node
@@ -54,7 +55,8 @@ resource "proxmox_virtual_environment_vm" "service" {
 
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = "10.69.69.21/24"
+        gateway = "10.69.69.1"
       }
     }
 
