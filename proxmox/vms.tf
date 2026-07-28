@@ -19,12 +19,6 @@ locals {
     # Bumped to 16G from its original 10G since it's a fresh build anyway
     # (MariaDB + RabbitMQ + app need more headroom than the original had).
     theia         = { vm_id = 200, cores = 1, memory = 2048, disk_size = 16, ip_address = "192.168.1.30/24" }
-
-    # Ops tooling: Jenkins replacement (Semaphore UI) and the new
-    # monitoring/ticketing stack (Prometheus+Grafana+Alertmanager, Zammad).
-    semaphore     = { vm_id = 202, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.72/24" }
-    monitoring    = { vm_id = 203, cores = 2, memory = 2048, disk_size = 30, ip_address = "192.168.1.73/24" }
-    zammad        = { vm_id = 204, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.74/24" }
   }
 }
 
