@@ -19,9 +19,8 @@ The modules are set up in the following order:
 
 Although the original intention was to build the stack in chunks, for operational simplicity, the entire stack is built by executing the root `main.tf` file.
 
-This Terraform configuration is executed by a Jenkins job. The job pulls this repository, runs the Terraform scripts from the root main.tf, and backs up the state file to an S3 bucket.
-I'm well aware that Terraform supports a S3 backend, and I have a ticket out for that: https://levantine2.atlassian.net/browse/DEVOPS-69 
-But for now executing on Jenkins and shipping the state file to S3 still meets my minimum requirements.
+This Terraform configuration is executed directly from `service` (the fleet's control-plane host, which holds a clone of this repo alongside the ansible repo -- see the ansible repo's README for how `service` is set up). Jenkins previously ran this as a CI job; it's been decommissioned in favor of running terraform/ansible straight from `service`, with Semaphore UI handling recurring/parameterized jobs.
+I'm well aware that Terraform supports a S3 backend, and I have a ticket out for that: https://levantine2.atlassian.net/browse/DEVOPS-69
 
 To execute the configuration, stay in the project root directory and execute the root `main.tf` file with the appropriate environment variables file:
 
