@@ -6,7 +6,6 @@ locals {
   vms = {
     vmwarebastion = { vm_id = 107, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.10/24" }
     dockerhost1   = { vm_id = 105, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.31/24" }
-    splunk        = { vm_id = 106, cores = 2, memory = 4096, disk_size = 32, ip_address = "192.168.1.21/24" }
     pxdbc1        = { vm_id = 108, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.61/24" }
     pxdbc2        = { vm_id = 109, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.62/24" }
     pxdbc3        = { vm_id = 110, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.63/24" }
