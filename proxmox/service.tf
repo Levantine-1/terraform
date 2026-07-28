@@ -23,20 +23,24 @@ resource "proxmox_virtual_environment_vm" "service" {
   }
 
   cpu {
-    cores = 2
+    cores = 4
   }
 
   memory {
-    dedicated = 2048
+    dedicated = 6144
   }
 
   scsi_hardware = "virtio-scsi-pci"
 
+  # Resized 2 core/2GB/16GB -> 4 core/6GB/50GB to host the ops stack
+  # directly on service instead of separate VMs: Semaphore UI, Prometheus/
+  # Grafana/Alertmanager/Loki, and Zammad (no Elasticsearch -- unnecessary
+  # for a low ticket volume homelab, and the single biggest resource cost).
   disk {
     datastore_id = "SSD1TB"
     file_id      = proxmox_download_file.debian_cloud_image.id
     interface    = "scsi0"
-    size         = 16
+    size         = 50
     file_format  = "raw"
   }
 
