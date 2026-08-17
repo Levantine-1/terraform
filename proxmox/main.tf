@@ -15,6 +15,18 @@ variable "proxmox_node" {
   default = "pve"
 }
 
+# Second, separate (non-clustered) Proxmox host. It also reports node name
+# "pve" (the OS default) -- the two hosts are only distinguishable by which
+# API endpoint you're talking to, so this is a genuinely separate provider
+# instance, not just a different node_name on the same one.
+variable "proxmox_endpoint_host2" {
+  default = "https://10.69.69.116:8006/"
+}
+
+variable "proxmox_node_host2" {
+  default = "pve"
+}
+
 # Same automation user/key every host in this fleet already trusts
 # (matches aws_key_pair.automation_key_pair in the ec2 module)
 variable "automation_ssh_public_key" {
@@ -45,5 +57,29 @@ provider "proxmox" {
     agent    = false
     username = data.vault_generic_secret.proxmox_node_ssh.data["username"]
     password = data.vault_generic_secret.proxmox_node_ssh.data["password"]
+  }
+}
+
+# Credentials for the second host, same pattern as above (mirrors the
+# aws.delegate alias pattern used in ec2/instances and route53/hosted_zones
+# for the subdomain-delegation AWS account).
+data "vault_generic_secret" "proxmox_token_host2" {
+  path = "kv/proxmox/host2/api_token"
+}
+
+data "vault_generic_secret" "proxmox_node_ssh_host2" {
+  path = "kv/proxmox/host2/node_ssh"
+}
+
+provider "proxmox" {
+  alias     = "host2"
+  endpoint  = var.proxmox_endpoint_host2
+  api_token = "${data.vault_generic_secret.proxmox_token_host2.data["token_id"]}=${data.vault_generic_secret.proxmox_token_host2.data["token_secret"]}"
+  insecure  = true
+
+  ssh {
+    agent    = false
+    username = data.vault_generic_secret.proxmox_node_ssh_host2.data["username"]
+    password = data.vault_generic_secret.proxmox_node_ssh_host2.data["password"]
   }
 }
