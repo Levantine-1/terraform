@@ -20,8 +20,18 @@ locals {
     pxdbc3    = { vm_id = 110, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.63/24" }
     proxysql  = { vm_id = 111, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.71/24" }
     kube-c-00 = { vm_id = 112, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.80/24" }
-    kube-w-00 = { vm_id = 113, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.90/24" }
-    kube-w-01 = { vm_id = 114, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.91/24" }
+    # kube-w-00/kube-w-01 scaled down (2026-08-17): this cluster only exists
+    # as a portfolio tech demo (hosts DataGateway, a single low-traffic
+    # Spring middleman service) -- it was idling at 3 full nodes with zero
+    # workload deployed. kube-c-00 alone now runs the demo single-node (see
+    # the control-plane untaint task in configure_control_plane.yml).
+    # To restore the full 3-node demo state: uncomment these two lines,
+    # uncomment the matching entries in ansible's production.ini
+    # [DataGatewayK8Cluster] group, `terraform apply`, then re-run
+    # roles/os_configs/kubernetes_clusters_baseline (or app.yml) to join
+    # them.
+    # kube-w-00 = { vm_id = 113, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.90/24" }
+    # kube-w-01 = { vm_id = 114, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.91/24" }
     # theia was an ESXi-imported disk with no install automation; now a
     # fresh cloud-init VM provisioned by roles/applications/theia/install.yml.
     # Bumped to 16G from its original 10G since it's a fresh build anyway
