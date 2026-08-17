@@ -7,7 +7,12 @@ variable "users" {
              "terraform_theia",
              "terraform_portfolio",
              "terraform_datagateway",
-             "terraform_processmining"
+             "terraform_processmining",
+             "terraform_pet-care",
+             "terraform_dental-care",
+             "terraform_education-platform",
+             "terraform_real-estate",
+             "terraform_booking-movie-ticket"
     ]
 }
 
@@ -47,3 +52,36 @@ resource "aws_iam_access_key" "create_access_keys" {
 # }
 # EOT
 # }
+
+# Store access keys for the 5 microservice users added alongside portfolio/
+# thisper/processmining (see supported_containers in the ansible repo's
+# group_vars/VMWareDockerHosts). These are genuinely fresh creates in this
+# apply, so -- unlike the six pre-existing users above -- each.value.secret
+# is guaranteed non-null here. Filtered by name rather than reusing the
+# commented-out resource above so this never touches the pre-existing
+# users' already-correct Vault secrets.
+locals {
+  new_service_users = [
+    "terraform_pet-care",
+    "terraform_dental-care",
+    "terraform_education-platform",
+    "terraform_real-estate",
+    "terraform_booking-movie-ticket",
+  ]
+}
+
+resource "vault_generic_secret" "store_new_service_access_keys" {
+  for_each = {
+    for idx, key in aws_iam_access_key.create_access_keys :
+    aws_iam_user.create_users[idx].name => key
+    if contains(local.new_service_users, aws_iam_user.create_users[idx].name)
+  }
+
+  path = "kv/aws/iam_access_keys/${each.key}"
+  data_json = <<EOT
+{
+  "access_key": "${each.value.id}",
+  "secret_key": "${each.value.secret}"
+}
+EOT
+}
