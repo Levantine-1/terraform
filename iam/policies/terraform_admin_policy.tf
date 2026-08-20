@@ -2,6 +2,14 @@
 # names here. This is not ideal, but it is the only way I could figure out how to do it.
 # Just use find and replace tools to change the name of the policy, group, and attachment.
 
+# 2026-08-20: added the ecr:* block below -- terraform_admin had no ECR
+# grant at all until now (confirmed: aws ecr describe-repositories and
+# terraform import of a pre-existing ECR repo both failed AccessDenied).
+# Every per-service scoped user only has ecr:* on its own single
+# repository, so there was no identity that could read arbitrary ECR
+# repos for admin/bootstrap purposes -- needed when importing pre-existing
+# ECR repos into the new per-repo terraform state (see portfolio/terraform
+# and siblings).
 resource "aws_iam_policy" "terraform_admin_policy" {
   name        = "terraform_admin_policy"
   description = "Policy for terraform admin to bootstrap and manage basic AWS resources"
@@ -76,6 +84,13 @@ resource "aws_iam_policy" "terraform_admin_policy" {
             "Effect": "Allow",
             "Action": [
                 "ec2:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:*"
             ],
             "Resource": "*"
         }
