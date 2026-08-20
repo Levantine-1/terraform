@@ -6,6 +6,13 @@ module "iam_users" {
   source = "./users"
 }
 
+# Account-wide GitHub Actions OIDC provider -- created once here, child
+# repos' own terraform reference it via a data source (see
+# iam/oidc/github_oidc_provider.tf).
+module "iam_oidc" {
+  source = "./oidc"
+}
+
 # Manage IAM groups
 module "iam_groups" {
   depends_on = [module.iam_users]
