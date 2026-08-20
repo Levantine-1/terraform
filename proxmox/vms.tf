@@ -46,7 +46,9 @@ resource "proxmox_virtual_environment_vm" "vms" {
   name      = each.key
   node_name = var.proxmox_node
   vm_id     = each.value.vm_id
-  on_boot   = false
+  # Auto-start on hypervisor boot -- see service.tf's on_boot comment for
+  # why (2026-08-20 fleet-wide outage from a host reboot).
+  on_boot   = true
 
   agent {
     enabled = false
@@ -124,7 +126,9 @@ resource "proxmox_virtual_environment_vm" "vms_fx8200" {
   name      = each.key
   node_name = var.proxmox_node_host2
   vm_id     = each.value.vm_id
-  on_boot   = false
+  # Auto-start on hypervisor boot -- see service.tf's on_boot comment for
+  # why (2026-08-20 fleet-wide outage from a host reboot).
+  on_boot   = true
 
   agent {
     enabled = false

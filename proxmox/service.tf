@@ -16,7 +16,10 @@ resource "proxmox_virtual_environment_vm" "service" {
   name      = "service"
   node_name = var.proxmox_node
   vm_id     = 103
-  on_boot   = false
+  # Auto-start on hypervisor boot -- service is the control plane, and a
+  # host reboot with on_boot=false left the entire fleet down until this
+  # was noticed and every VM started by hand (2026-08-20 incident).
+  on_boot   = true
 
   agent {
     enabled = false
