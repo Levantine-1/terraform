@@ -5,11 +5,14 @@
 locals {
   vms = {
     vmwarebastion = { vm_id = 107, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.10/24" }
-    # Bumped from cores=2/memory=2048: it hosts 9 concurrent self-hosted
-    # GitHub Actions runners (one per app repo) plus their Docker builds --
-    # the original sizing hit ~85% I/O pressure and memory pinned at its
-    # ceiling under concurrent CI load, causing runners to flap offline.
-    dockerhost1   = { vm_id = 105, cores = 8, memory = 16384, disk_size = 16, ip_address = "192.168.1.31/24" }
+    # Bumped from cores=2/memory=2048/disk_size=16: it hosts 9 concurrent
+    # self-hosted GitHub Actions runners (one per app repo) plus their
+    # Docker builds -- the original sizing hit ~85% I/O pressure and
+    # memory pinned at its ceiling under concurrent CI load, causing
+    # runners to flap offline, and separately ran the disk out of space
+    # (each runner install carries its own ~600MB externals/ copy, plus
+    # per-repo terraform provider downloads and checkouts).
+    dockerhost1   = { vm_id = 105, cores = 8, memory = 16384, disk_size = 32, ip_address = "192.168.1.31/24" }
   }
 }
 
