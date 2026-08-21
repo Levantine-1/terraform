@@ -27,6 +27,10 @@ resource "proxmox_virtual_environment_vm" "service" {
 
   cpu {
     cores = 4
+    # host, not the default qemu64 -- see proxmox/vms.tf's matching
+    # comment for why (a live container elsewhere in the fleet was
+    # crash-looping from missing CPU instruction extensions).
+    type = "host"
   }
 
   memory {

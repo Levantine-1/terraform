@@ -69,6 +69,14 @@ resource "proxmox_virtual_environment_vm" "vms" {
 
   cpu {
     cores = each.value.cores
+    # host, not the default qemu64: qemu64 hides modern instruction
+    # extensions (SSE4.x, AVX, AVX2) from the guest even though the
+    # physical host supports them. Broke a live container (processmining
+    # crash-looping: "NumPy was built with baseline optimizations
+    # (X86_V2) but your machine doesn't support (X86_V2)"). Safe here
+    # since each Proxmox host runs standalone, not clustered -- no live
+    # migration to a different CPU model to worry about.
+    type = "host"
   }
 
   memory {
@@ -149,6 +157,14 @@ resource "proxmox_virtual_environment_vm" "vms_fx8200" {
 
   cpu {
     cores = each.value.cores
+    # host, not the default qemu64: qemu64 hides modern instruction
+    # extensions (SSE4.x, AVX, AVX2) from the guest even though the
+    # physical host supports them. Broke a live container (processmining
+    # crash-looping: "NumPy was built with baseline optimizations
+    # (X86_V2) but your machine doesn't support (X86_V2)"). Safe here
+    # since each Proxmox host runs standalone, not clustered -- no live
+    # migration to a different CPU model to worry about.
+    type = "host"
   }
 
   memory {
