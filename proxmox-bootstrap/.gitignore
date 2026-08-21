@@ -1,0 +1,6 @@
+# Local state on purpose (see main.tf's header comment) -- never commit it,
+# it can contain the Proxmox credentials passed in as -var at apply time.
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+.terraform.tfstate.lock.info
