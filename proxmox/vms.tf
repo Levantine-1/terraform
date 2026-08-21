@@ -43,7 +43,17 @@ locals {
     pxdbc2    = { vm_id = 109, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.62/24" }
     pxdbc3    = { vm_id = 110, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.63/24" }
     proxysql  = { vm_id = 111, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.71/24" }
-    kube-c-00 = { vm_id = 112, cores = 2, memory = 4096, disk_size = 20, ip_address = "192.168.1.80/24" }
+    # Bumped from cores=2: measured (not guessed) during the soft-DR test
+    # rebuild -- `uptime` showed load average 5.65 on 2 cores (283%
+    # overload) while DataGateway's 4 replicas started simultaneously
+    # alongside the control plane's own etcd/apiserver/controller-manager/
+    # scheduler, causing DNS/network syscalls to fail under scheduling
+    # pressure (UnknownHostException crash-looping every replica). Same
+    # class of issue as dockerhost1 earlier this session. Left at a modest
+    # bump, not a big guess -- replica count (currently 4, in
+    # dataGatewayK8Configs.yml) may also be worth reducing for what's
+    # described as a low-traffic demo app; flagged, not changed here.
+    kube-c-00 = { vm_id = 112, cores = 4, memory = 4096, disk_size = 20, ip_address = "192.168.1.80/24" }
     # kube-w-00/kube-w-01 scaled down (2026-08-17): this cluster only exists
     # as a portfolio tech demo (hosts DataGateway, a single low-traffic
     # Spring middleman service) -- it was idling at 3 full nodes with zero
