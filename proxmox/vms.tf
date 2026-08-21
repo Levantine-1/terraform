@@ -19,6 +19,17 @@ locals {
     # disk_size stays at 32: that one was a genuine, measured shortfall,
     # not a guess.
     dockerhost1   = { vm_id = 105, cores = 6, memory = 4096, disk_size = 32, ip_address = "192.168.1.31/24" }
+    # pi-hole was hand-built (predates this module, never imported) --
+    # brought under terraform now as part of closing that gap. Ansible's
+    # configure_pi-hole.yml already installs it fully from scratch via
+    # pi-hole's own unattended installer, so this is just the VM shell.
+    pi-hole       = { vm_id = 102, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.2/24" }
+    # vault was hand-built (predates this module, never imported) --
+    # brought under terraform now as part of closing that gap. Ansible's
+    # hashicorp_vault/configure_hvault_server.yml already installs Vault
+    # fully from scratch, so this is just the VM shell; init/unseal stays
+    # a deliberately manual, human-driven step.
+    vault         = { vm_id = 104, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.41/24" }
   }
 }
 
