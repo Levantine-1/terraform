@@ -45,7 +45,7 @@ resource "proxmox_virtual_environment_vm" "service" {
   # for a low ticket volume homelab, and the single biggest resource cost).
   disk {
     datastore_id = "SSD1TB"
-    file_id      = proxmox_download_file.debian_cloud_image.id
+    file_id      = proxmox_download_file.debian_cloud_image_service.id
     interface    = "scsi0"
     size         = 50
     file_format  = "raw"
