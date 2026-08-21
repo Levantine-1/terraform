@@ -7,12 +7,18 @@ locals {
     vmwarebastion = { vm_id = 107, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.10/24" }
     # Bumped from cores=2/memory=2048/disk_size=16: it hosts 9 concurrent
     # self-hosted GitHub Actions runners (one per app repo) plus their
-    # Docker builds -- the original sizing hit ~85% I/O pressure and
-    # memory pinned at its ceiling under concurrent CI load, causing
-    # runners to flap offline, and separately ran the disk out of space
-    # (each runner install carries its own ~600MB externals/ copy, plus
-    # per-repo terraform provider downloads and checkouts).
-    dockerhost1   = { vm_id = 105, cores = 8, memory = 16384, disk_size = 32, ip_address = "192.168.1.31/24" }
+    # Docker builds. The original sizing ran the disk out of space (each
+    # runner install carries its own ~600MB externals/ copy, plus
+    # per-repo terraform provider downloads and checkouts) and, combined
+    # with only 2 cores, produced enough I/O/CPU contention that runners
+    # flapped offline. cores/memory were first bumped to 8/16384 as an
+    # emergency fix, then measured against real peak usage via Prometheus
+    # (node_exporter) during the busiest observed concurrent-build window
+    # -- CPU peaked at ~69.5% of 8 cores (~5.5 cores' worth), memory
+    # peaked at only ~2GB -- and right-sized down to 6/4096 accordingly.
+    # disk_size stays at 32: that one was a genuine, measured shortfall,
+    # not a guess.
+    dockerhost1   = { vm_id = 105, cores = 6, memory = 4096, disk_size = 32, ip_address = "192.168.1.31/24" }
   }
 }
 
