@@ -11,7 +11,8 @@ variable "groups" {
     "terraform_dental-care_group",
     "terraform_education-platform_group",
     "terraform_real-estate_group",
-    "terraform_booking-movie-ticket_group"
+    "terraform_booking-movie-ticket_group",
+    "terraform_livecam_group"
   ]
 }
 

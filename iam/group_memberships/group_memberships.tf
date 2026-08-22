@@ -14,6 +14,7 @@ variable "user_group_associations" {
     "terraform_education-platform"   = ["terraform_education-platform_group"],
     "terraform_real-estate"          = ["terraform_real-estate_group"],
     "terraform_booking-movie-ticket" = ["terraform_booking-movie-ticket_group"],
+    "terraform_livecam"              = ["terraform_livecam_group"],
     # Add more user-group associations as needed
   }
 }

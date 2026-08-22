@@ -12,7 +12,8 @@ variable "users" {
              "terraform_dental-care",
              "terraform_education-platform",
              "terraform_real-estate",
-             "terraform_booking-movie-ticket"
+             "terraform_booking-movie-ticket",
+             "terraform_livecam"
     ]
 }
 
@@ -67,6 +68,7 @@ locals {
     "terraform_education-platform",
     "terraform_real-estate",
     "terraform_booking-movie-ticket",
+    "terraform_livecam",
   ]
 }
 
