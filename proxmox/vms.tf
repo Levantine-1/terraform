@@ -18,7 +18,24 @@ locals {
     # peaked at only ~2GB -- and right-sized down to 6/4096 accordingly.
     # disk_size stays at 32: that one was a genuine, measured shortfall,
     # not a guess.
-    dockerhost1   = { vm_id = 105, cores = 6, memory = 4096, disk_size = 32, ip_address = "192.168.1.31/24" }
+    #
+    # memory 4096 -> 6144 (2026-08-22), again measured rather than guessed.
+    # The 4096 figure was right when it was set -- peak was ~2GB then --
+    # but a 10th runner (livecam) plus accumulated per-runner terraform
+    # provider caches moved the floor. Prometheus over the following 7
+    # days: peak used 3832MB of 3914 (97.9%) and minimum available memory
+    # of 74MB, against an avg of only ~1GB, i.e. fine at rest and
+    # exhausted under concurrent CI. That exhaustion is what produced
+    # "timeout while waiting for plugin to start" / "Failed to load plugin
+    # schemas" across several repos at once -- terraform couldn't fork its
+    # provider plugins. The floor is now ~2.6GB before any job runs (10
+    # idle runners alone hold ~1058MB resident, containers ~1077MB, of
+    # which booking-movie-ticket is 785MB), leaving too little for more
+    # than one concurrent terraform run. 6144 leaves ~3.5GB of headroom.
+    # CPU and disk were checked at the same time and left alone: CPU
+    # averages 1.2% of 6 cores (peaks are brief), and root sits at 66.7%
+    # with a flat trend.
+    dockerhost1   = { vm_id = 105, cores = 6, memory = 6144, disk_size = 32, ip_address = "192.168.1.31/24" }
     # pi-hole was hand-built (predates this module, never imported) --
     # brought under terraform now as part of closing that gap. Ansible's
     # configure_pi-hole.yml already installs it fully from scratch via
