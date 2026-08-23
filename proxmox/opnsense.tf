@@ -44,15 +44,9 @@ resource "proxmox_download_file" "opnsense_iso" {
 
 # KNOWN DRIFT, LEFT DELIBERATELY UNAPPLIED: `terraform plan` on this
 # resource is not clean, and that is expected. Imported from the hand-built
-# VM, whose real config differs from what is declared below in ways that
-# would need the router stopped to reconcile:
+# VM, whose real config still differs from what is declared below in one
+# way that would need the router stopped again to reconcile:
 #
-#   cpu.type       real: qemu64   declared: host   (see vms.tf's cpu.type
-#     comment for why "host" is correct -- it is a verified fix for an AVX
-#     instruction-set bug, applied to dockerhost1 after it broke a running
-#     container. Not yet applied here because it needs a stop/start, and
-#     this VM is the router: taking it down needs a deliberate window, not
-#     an incidental side effect of an unrelated apply.)
 #   disk.interface real: sata1    declared: sata0  (moving a live boot
 #     disk's controller slot is the genuinely risky one of this set --
 #     don't apply this without understanding exactly what Proxmox does to
@@ -61,13 +55,21 @@ resource "proxmox_download_file" "opnsense_iso" {
 #     was detached after setup completed); declared here purely as the
 #     shape a fresh rebuild would need.
 #
+# cpu.type WAS the same kind of drift (real: qemu64, declared: host) and is
+# now fixed for real -- applied 2026-08-23 via a scheduled stop/start
+# (`qm set 101 --cpu host` + stop/start on the hypervisor directly, not
+# through terraform apply, specifically to avoid also picking up the disk
+# change above in the same action). See vms.tf's cpu.type comment for why
+# "host" is correct: a verified fix for an AVX instruction-set bug, first
+# applied to dockerhost1 after it broke a running container.
+#
 # scsi_hardware / vga / operating_system also show as drift but are cosmetic
 # metadata with no boot-time effect either way.
 #
 # Never run an unscoped `terraform apply` against this resource. If the
-# cpu.type/disk changes are ever wanted for real, that is a scheduled,
-# backed-up, router-offline maintenance action -- not something to do
-# because a plan happened to mention it.
+# disk change is ever wanted for real, that is a scheduled, backed-up,
+# router-offline maintenance action -- not something to do because a plan
+# happened to mention it.
 resource "proxmox_virtual_environment_vm" "opnsense" {
   name      = "opnsense"
   node_name = var.proxmox_node

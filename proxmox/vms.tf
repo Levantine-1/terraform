@@ -115,15 +115,21 @@ resource "proxmox_virtual_environment_vm" "vms" {
     # since each Proxmox host runs standalone, not clustered -- no live
     # migration to a different CPU model to worry about.
     #
-    # Applied and confirmed on dockerhost1. Declared here for pi-hole and
-    # vault too, but NOT yet applied to either -- `terraform plan` shows
-    # this as drift (real: qemu64, declared: host) because both are
-    # critical-tier (never touched by rebuild-fleet.sh) and picking up the
-    # fix needs a stop/start, which nobody has scheduled for the DNS host
-    # or the secrets store. Same situation, same fix, on opnsense.tf and
-    # service.tf. Worth doing deliberately -- this is a real instruction-set
-    # gap, not just an unclean plan -- but on a chosen maintenance window,
-    # not as a side effect of an unrelated apply.
+    # Applied and confirmed on dockerhost1, and since 2026-08-23 on
+    # opnsense, service and pi-hole too (via `qm set --cpu host` + a
+    # scheduled stop/start on the hypervisor directly for each, not
+    # `terraform apply` -- opnsense specifically has other, riskier drift
+    # that a whole-resource apply would have picked up along with it; see
+    # opnsense.tf).
+    #
+    # Still NOT applied to `vault`: `terraform plan` shows it as drift
+    # (real: qemu64, declared: host) because reconciling it means stopping
+    # the secrets store, and unlike the others, Vault does not auto-unseal
+    # (Shamir, confirmed via /v1/sys/seal-status) -- it will come back up
+    # sealed and stay that way until someone runs `vault operator unseal`
+    # three times with the key shares. That is a "get the unseal keys out"
+    # action, not a "wait for it to boot" one, so it is deliberately left
+    # for a moment when that is convenient rather than done in passing.
     type = "host"
   }
 

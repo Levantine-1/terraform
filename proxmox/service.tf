@@ -29,11 +29,11 @@ resource "proxmox_virtual_environment_vm" "service" {
     cores = 4
     # host, not the default qemu64 -- see proxmox/vms.tf's matching
     # comment for why (a live container elsewhere in the fleet was
-    # crash-looping from missing CPU instruction extensions), and for why
-    # this is declared but NOT yet applied here: `terraform plan` shows
-    # this VM still on qemu64. Reconciling it means stopping the control
-    # plane this session is running through -- a scheduled action, not an
-    # incidental one.
+    # crash-looping from missing CPU instruction extensions). Applied for
+    # real 2026-08-23 via `qm set --cpu host` + stop/start on the
+    # hypervisor directly, issued from outside this VM specifically
+    # because it cannot cleanly stop-and-restart itself as part of a
+    # script running on itself.
     type = "host"
   }
 
