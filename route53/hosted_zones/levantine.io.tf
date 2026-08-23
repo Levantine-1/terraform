@@ -81,5 +81,11 @@ resource "aws_route53_record" "service_levantine_io" {
   name     = "service.levantine.io"
   type     = "A"
   ttl      = 300
-  records  = ["192.168.1.50"]
+  # Home-LAN address (net0/eth0, 10.69.69.0/24), not the internal VLAN
+  # address (192.168.1.50) -- reachable directly from devices on the home LAN
+  # without a hop through OPNsense. Confirmed live (2026-08-23): this is a
+  # floating DHCP lease (no static reservation for eth0's MAC,
+  # bc:24:11:52:91:25, in OPNsense's DHCP config), so it can change on a
+  # reboot or lease renewal -- add one if this address needs to stay durable.
+  records = ["10.69.69.133"]
 }
