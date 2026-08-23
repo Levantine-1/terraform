@@ -57,6 +57,23 @@ resource "aws_route53_record" "configure_theia_r53_levantine_record" {
 # outside the house. Gives it a real hostname for a proper TLS cert
 # (roles/os_configs/deploySSLCerts.yml's *.levantine.io wildcard already
 # covers it) instead of a bare-IP plain-HTTP page.
+#
+# This record alone is not enough to resolve from inside the house. OPNsense's
+# Unbound already has two host overrides under bare levantine.io (livecam,
+# livecam-lan -- see roles/applications/opnsense/backups/config.xml), which
+# makes levantine.io a local zone there. Confirmed live (2026-08-23):
+# local_zone_type is "transparent", which per Unbound's own semantics should
+# fall through to real recursion for any name not explicitly listed -- but
+# empirically service.levantine.io returned NOERROR/NODATA from OPNsense's
+# resolver even though the real Route53 record resolved correctly and
+# immediately via a public resolver (8.8.8.8), and waiting out a plausible
+# negative-cache TTL didn't fix it either. The reliable fix -- proven by
+# livecam-lan already working the same way -- is an explicit Unbound host
+# override for the new name too
+# (roles/applications/opnsense/files/add_dns_host_override.py <name> <ip>
+# --domain levantine.io), not just the Route53 record. Any future bare
+# *.levantine.io record needs that same second step, or it resolves fine
+# from outside the house and nowhere inside it.
 resource "aws_route53_record" "service_levantine_io" {
   provider = aws.delegate
   count    = var.environment == "prod" ? 1 : 0
