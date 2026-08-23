@@ -50,3 +50,19 @@ resource "aws_route53_record" "configure_theia_r53_levantine_record" {
   ttl     = 300
   records = ["54.70.96.91"]
 }
+
+# service's ops dashboard, reachable at its LAN IP -- same pattern as
+# create_splunk_vpn_record (ec2/instances/bastion.tf): a public DNS name
+# resolving to a 192.168.1.x address, never intended to be reachable from
+# outside the house. Gives it a real hostname for a proper TLS cert
+# (roles/os_configs/deploySSLCerts.yml's *.levantine.io wildcard already
+# covers it) instead of a bare-IP plain-HTTP page.
+resource "aws_route53_record" "service_levantine_io" {
+  provider = aws.delegate
+  count    = var.environment == "prod" ? 1 : 0
+  zone_id  = var.levantine_io_hosted_zone_id
+  name     = "service.levantine.io"
+  type     = "A"
+  ttl      = 300
+  records  = ["192.168.1.50"]
+}
