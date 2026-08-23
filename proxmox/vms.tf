@@ -4,7 +4,7 @@
 # in service.tf since it's dual-NIC and has no dependencies.
 locals {
   vms = {
-    vmwarebastion = { vm_id = 107, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.10/24" }
+    vmwarebastion  = { vm_id = 107, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.10/24" }
     # Bumped from cores=2/memory=2048/disk_size=16: it hosts 9 concurrent
     # self-hosted GitHub Actions runners (one per app repo) plus their
     # Docker builds. The original sizing ran the disk out of space (each
@@ -35,18 +35,38 @@ locals {
     # CPU and disk were checked at the same time and left alone: CPU
     # averages 1.2% of 6 cores (peaks are brief), and root sits at 66.7%
     # with a flat trend.
-    dockerhost1   = { vm_id = 105, cores = 6, memory = 6144, disk_size = 32, ip_address = "192.168.1.31/24" }
+    dockerhost1    = { vm_id = 105, cores = 6, memory = 6144, disk_size = 32, ip_address = "192.168.1.31/24" }
     # pi-hole was hand-built (predates this module, never imported) --
     # brought under terraform now as part of closing that gap. Ansible's
     # configure_pi-hole.yml already installs it fully from scratch via
     # pi-hole's own unattended installer, so this is just the VM shell.
-    pi-hole       = { vm_id = 102, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.2/24" }
+    pi-hole        = { vm_id = 102, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.2/24" }
+    # Automated incident triage (roles/applications/incident-agent): runs a
+    # local LLM via Ollama plus the rule-based triage/escalation daemons that
+    # respond to Alertmanager-generated Zammad tickets.
+    #
+    # Placed on this host rather than on `service` deliberately, even though
+    # `service` is where the whole ops stack (Prometheus/Alertmanager/Loki/
+    # Zammad) already lives: CPU inference is a sustained multi-core burn, and
+    # `service` was right-sized against measured usage with headroom that a
+    # resident model would eat. Measured before choosing (2026-08-23): this
+    # host had 42GB of 62GB available at load 0.14 across 16 cores, while the
+    # other hypervisor (fx8200) had only 7.4GB free at load 1.2 -- not a
+    # candidate.
+    #
+    # 6144 rather than the ~4GB the model itself needs: the 3.8B model is
+    # ~2.3GB resident, and the rest is headroom for Ollama's runtime, the
+    # daemons, and diagnostic collection. Sizing is a starting estimate, not a
+    # measurement -- unlike every other entry here it has no production
+    # history behind it yet, so re-check it against real usage once this has
+    # handled actual incidents.
+    incident-agent = { vm_id = 106, cores = 4, memory = 6144, disk_size = 20, ip_address = "192.168.1.51/24" }
     # vault was hand-built (predates this module, never imported) --
     # brought under terraform now as part of closing that gap. Ansible's
     # hashicorp_vault/configure_hvault_server.yml already installs Vault
     # fully from scratch, so this is just the VM shell; init/unseal stays
     # a deliberately manual, human-driven step.
-    vault         = { vm_id = 104, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.41/24" }
+    vault          = { vm_id = 104, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.41/24" }
   }
 }
 
