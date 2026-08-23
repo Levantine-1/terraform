@@ -114,6 +114,16 @@ resource "proxmox_virtual_environment_vm" "vms" {
     # (X86_V2) but your machine doesn't support (X86_V2)"). Safe here
     # since each Proxmox host runs standalone, not clustered -- no live
     # migration to a different CPU model to worry about.
+    #
+    # Applied and confirmed on dockerhost1. Declared here for pi-hole and
+    # vault too, but NOT yet applied to either -- `terraform plan` shows
+    # this as drift (real: qemu64, declared: host) because both are
+    # critical-tier (never touched by rebuild-fleet.sh) and picking up the
+    # fix needs a stop/start, which nobody has scheduled for the DNS host
+    # or the secrets store. Same situation, same fix, on opnsense.tf and
+    # service.tf. Worth doing deliberately -- this is a real instruction-set
+    # gap, not just an unclean plan -- but on a chosen maintenance window,
+    # not as a side effect of an unrelated apply.
     type = "host"
   }
 
