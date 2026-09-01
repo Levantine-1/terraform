@@ -70,8 +70,20 @@ resource "proxmox_virtual_environment_vm" "frigate" {
   disk {
     datastore_id = "nvr-hdd"
     interface    = "scsi1"
+    # 1900 GiB on a 1832 GiB physical volume. This is overprovisioned, and it
+    # cannot be corrected here: virtual disks cannot be shrunk without
+    # recreating them, which would destroy the footage. So the guest can
+    # believe it has space the host cannot supply, and the RETENTION WINDOW is
+    # what has to keep real usage inside what the host can back -- see
+    # frigate_retain_days in ansible's frigate role. Do not "fix" this by
+    # lowering the number.
     size         = 1900
     file_format  = "raw"
+    # Without this QEMU drops the guest's TRIM/discard, so when Frigate ages
+    # footage out the freed blocks are never punched back to the sparse image
+    # and its real footprint on /mnt/nvr-hdd only ever grows. fstrim.timer is
+    # already enabled inside the guest, so this is the missing half.
+    discard      = "on"
   }
 
   network_device {
