@@ -61,11 +61,16 @@ resource "proxmox_virtual_environment_vm" "service" {
   # and vice versa. SSD1TB is thick LVM, so all 500G is allocated up front
   # (leaving ~319G free in the pool) -- about a decade at one camera every
   # 15 minutes, and it can be grown in place later.
+  #
+  # backup = false keeps it out of Proxmox's vzdump backups of this VM:
+  # JPEGs don't compress, so every VM backup would otherwise copy the whole
+  # growing archive. Its backup is the nightly DEEP_ARCHIVE upload to S3.
   disk {
     datastore_id = "SSD1TB"
     interface    = "scsi1"
     size         = 500
     file_format  = "raw"
+    backup       = false
   }
 
   network_device {
