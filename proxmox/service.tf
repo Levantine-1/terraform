@@ -55,6 +55,19 @@ resource "proxmox_virtual_environment_vm" "service" {
     file_format  = "raw"
   }
 
+  # Timelapse frames (ansible roles/applications/timelapse), mounted at
+  # /srv/timelapse. Its own disk rather than a bigger root: a years-long
+  # archive must never be able to fill the disk the control plane runs on,
+  # and vice versa. SSD1TB is thick LVM, so all 500G is allocated up front
+  # (leaving ~319G free in the pool) -- about a decade at one camera every
+  # 15 minutes, and it can be grown in place later.
+  disk {
+    datastore_id = "SSD1TB"
+    interface    = "scsi1"
+    size         = 500
+    file_format  = "raw"
+  }
+
   network_device {
     bridge = "vmbr0"
   }

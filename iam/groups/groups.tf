@@ -12,7 +12,8 @@ variable "groups" {
     "terraform_education-platform_group",
     "terraform_real-estate_group",
     "terraform_booking-movie-ticket_group",
-    "terraform_livecam_group"
+    "terraform_livecam_group",
+    "timelapse_backup_group"
   ]
 }
 

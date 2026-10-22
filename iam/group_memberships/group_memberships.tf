@@ -15,6 +15,7 @@ variable "user_group_associations" {
     "terraform_real-estate"          = ["terraform_real-estate_group"],
     "terraform_booking-movie-ticket" = ["terraform_booking-movie-ticket_group"],
     "terraform_livecam"              = ["terraform_livecam_group"],
+    "timelapse_backup"               = ["timelapse_backup_group"],
     # Add more user-group associations as needed
   }
 }

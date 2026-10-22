@@ -13,7 +13,12 @@ variable "users" {
              "terraform_education-platform",
              "terraform_real-estate",
              "terraform_booking-movie-ticket",
-             "terraform_livecam"
+             "terraform_livecam",
+             # Not a terraform runner: the nightly timelapse backup on
+             # `service`. Appended last on purpose -- this list is keyed by
+             # index, so inserting anywhere else would renumber (and so
+             # destroy/recreate) every user after it.
+             "timelapse_backup"
     ]
 }
 
@@ -69,6 +74,7 @@ locals {
     "terraform_real-estate",
     "terraform_booking-movie-ticket",
     "terraform_livecam",
+    "timelapse_backup",
   ]
 }
 
