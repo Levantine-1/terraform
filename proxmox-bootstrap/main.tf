@@ -39,7 +39,7 @@ terraform {
 }
 
 variable "proxmox_endpoint" {
-  default = "https://10.69.69.139:8006/"
+  default = "https://10.69.69.40:8006/"
 }
 
 variable "proxmox_node" {

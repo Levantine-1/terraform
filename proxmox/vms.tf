@@ -1,4 +1,4 @@
-# VMs that stay on the original host (10.69.69.139). Single NIC on the
+# VMs that stay on the original host (10.69.69.40). Single NIC on the
 # internal LAN (vmbr1), same cloud-init pattern (automation user/key, static
 # IP, virtio-scsi disk on SSD1TB). service (vm_id 103) is defined separately
 # in service.tf since it's dual-NIC and has no dependencies.
@@ -70,7 +70,7 @@ locals {
   }
 }
 
-# VMs migrated to the second host (10.69.69.116) via manual vzdump
+# VMs migrated to the second host (10.69.69.41) via manual vzdump
 # backup/restore, now brought back under terraform. Same vm_id/ip_address as
 # before the migration -- only physical placement (node/provider/datastore)
 # changed.

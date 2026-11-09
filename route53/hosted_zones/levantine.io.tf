@@ -83,9 +83,12 @@ resource "aws_route53_record" "service_levantine_io" {
   ttl      = 300
   # Home-LAN address (net0/eth0, 10.69.69.0/24), not the internal VLAN
   # address (192.168.1.50) -- reachable directly from devices on the home LAN
-  # without a hop through OPNsense. Confirmed live (2026-08-23): this is a
-  # floating DHCP lease (no static reservation for eth0's MAC,
-  # bc:24:11:52:91:25, in OPNsense's DHCP config), so it can change on a
-  # reboot or lease renewal -- add one if this address needs to stay durable.
-  records = ["10.69.69.133"]
+  # without a hop through OPNsense. eth0 is DHCP from the home DD-WRT router
+  # (10.69.69.1 -- not OPNsense; this subnet is OPNsense's WAN side), pinned
+  # by a static lease for eth0's MAC bc:24:11:52:91:25 -> .50, outside the
+  # router's 100-149 pool. Was a floating lease until 2026-11-09, when a power
+  # outage moved it .133 -> .134 and silently broke every LAN entrance here.
+  # Must match livecam/terraform/route53_records.tf (livecam-lan) and
+  # livecam_lan_listen_address in ansible's roles/applications/livecam/lan_proxy.yml.
+  records = ["10.69.69.50"]
 }

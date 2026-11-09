@@ -8,7 +8,7 @@ terraform {
 }
 
 variable "proxmox_endpoint" {
-  default = "https://10.69.69.139:8006/"
+  default = "https://10.69.69.40:8006/"
 }
 
 variable "proxmox_node" {
@@ -20,7 +20,7 @@ variable "proxmox_node" {
 # API endpoint you're talking to, so this is a genuinely separate provider
 # instance, not just a different node_name on the same one.
 variable "proxmox_endpoint_host2" {
-  default = "https://10.69.69.116:8006/"
+  default = "https://10.69.69.41:8006/"
 }
 
 variable "proxmox_node_host2" {
