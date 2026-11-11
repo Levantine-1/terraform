@@ -20,6 +20,12 @@ resource "proxmox_virtual_environment_vm" "service" {
   # host reboot with on_boot=false left the entire fleet down until this
   # was noticed and every VM started by hand (2026-08-20 incident).
   on_boot   = true
+  # After opnsense (1), pi-hole (2) and vault (3), before the rest (10) --
+  # see vms.tf's startup comment. It runs fleet-recovery once it's up.
+  startup {
+    order    = 4
+    up_delay = 30
+  }
 
   agent {
     enabled = false

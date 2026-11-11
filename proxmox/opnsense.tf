@@ -75,6 +75,12 @@ resource "proxmox_virtual_environment_vm" "opnsense" {
   node_name = var.proxmox_node
   vm_id     = 101
   on_boot   = true
+  # First on 3800XT, with a minute's head start: everything else needs its
+  # DHCP/DNS/routing (see vms.tf's startup comment).
+  startup {
+    order    = 1
+    up_delay = 60
+  }
 
   agent {
     enabled = false

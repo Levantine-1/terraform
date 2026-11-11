@@ -23,6 +23,10 @@ resource "proxmox_virtual_environment_vm" "frigate" {
   # Auto-start on hypervisor boot -- see service.tf's on_boot comment for
   # why (2026-08-20 fleet-wide outage from a host reboot).
   on_boot = true
+  # After the database tier on FX8200 -- see vms.tf's startup comment.
+  startup {
+    order = 10
+  }
 
   agent {
     enabled = false

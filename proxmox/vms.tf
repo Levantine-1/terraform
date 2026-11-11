@@ -40,7 +40,7 @@ locals {
     # brought under terraform now as part of closing that gap. Ansible's
     # configure_pi-hole.yml already installs it fully from scratch via
     # pi-hole's own unattended installer, so this is just the VM shell.
-    pi-hole        = { vm_id = 102, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.2/24" }
+    pi-hole        = { vm_id = 102, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.2/24", startup_order = 2, startup_up_delay = 15 }
     # Automated incident triage (roles/applications/incident-agent): runs a
     # local LLM via Ollama plus the rule-based triage/escalation daemons that
     # respond to Alertmanager-generated Zammad tickets.
@@ -66,7 +66,7 @@ locals {
     # hashicorp_vault/configure_hvault_server.yml already installs Vault
     # fully from scratch, so this is just the VM shell; init/unseal stays
     # a deliberately manual, human-driven step.
-    vault          = { vm_id = 104, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.41/24" }
+    vault          = { vm_id = 104, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.41/24", startup_order = 3, startup_up_delay = 15 }
   }
 }
 
@@ -76,10 +76,10 @@ locals {
 # changed.
 locals {
   vms_fx8200 = {
-    pxdbc1    = { vm_id = 108, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.61/24" }
-    pxdbc2    = { vm_id = 109, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.62/24" }
-    pxdbc3    = { vm_id = 110, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.63/24" }
-    proxysql  = { vm_id = 111, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.71/24" }
+    pxdbc1    = { vm_id = 108, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.61/24", startup_order = 1, startup_up_delay = 5 }
+    pxdbc2    = { vm_id = 109, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.62/24", startup_order = 1, startup_up_delay = 5 }
+    pxdbc3    = { vm_id = 110, cores = 2, memory = 2048, disk_size = 16, ip_address = "192.168.1.63/24", startup_order = 1, startup_up_delay = 5 }
+    proxysql  = { vm_id = 111, cores = 1, memory = 1024, disk_size = 8, ip_address = "192.168.1.71/24", startup_order = 2, startup_up_delay = 5 }
     # Bumped from cores=2: measured (not guessed) during the soft-DR test
     # rebuild -- `uptime` showed load average 5.65 on 2 cores (283%
     # overload) while DataGateway's 4 replicas started simultaneously
@@ -90,7 +90,7 @@ locals {
     # bump, not a big guess -- replica count (currently 4, in
     # dataGatewayK8Configs.yml) may also be worth reducing for what's
     # described as a low-traffic demo app; flagged, not changed here.
-    kube-c-00 = { vm_id = 112, cores = 4, memory = 4096, disk_size = 20, ip_address = "192.168.1.80/24" }
+    kube-c-00 = { vm_id = 112, cores = 4, memory = 4096, disk_size = 20, ip_address = "192.168.1.80/24", startup_order = 3 }
     # kube-w-00/kube-w-01 scaled down (2026-08-17): this cluster only exists
     # as a portfolio tech demo (hosts DataGateway, a single low-traffic
     # Spring middleman service) -- it was idling at 3 full nodes with zero
@@ -120,6 +120,15 @@ resource "proxmox_virtual_environment_vm" "vms" {
   # Auto-start on hypervisor boot -- see service.tf's on_boot comment for
   # why (2026-08-20 fleet-wide outage from a host reboot).
   on_boot   = true
+  # Boot order within this host (2026-11-11): dependencies first, so
+  # VMs stop racing OPNsense/DNS/Vault (3800XT) and Galera (FX8200)
+  # after an outage. Per-VM startup_order/startup_up_delay in the maps
+  # above; everything else is 10. Cross-host ordering is handled by
+  # fleet-recovery on service (roles/applications/fleet_recovery).
+  startup {
+    order    = lookup(each.value, "startup_order", 10)
+    up_delay = lookup(each.value, "startup_up_delay", 0)
+  }
 
   agent {
     enabled = false
@@ -224,6 +233,15 @@ resource "proxmox_virtual_environment_vm" "vms_fx8200" {
   # Auto-start on hypervisor boot -- see service.tf's on_boot comment for
   # why (2026-08-20 fleet-wide outage from a host reboot).
   on_boot   = true
+  # Boot order within this host (2026-11-11): dependencies first, so
+  # VMs stop racing OPNsense/DNS/Vault (3800XT) and Galera (FX8200)
+  # after an outage. Per-VM startup_order/startup_up_delay in the maps
+  # above; everything else is 10. Cross-host ordering is handled by
+  # fleet-recovery on service (roles/applications/fleet_recovery).
+  startup {
+    order    = lookup(each.value, "startup_order", 10)
+    up_delay = lookup(each.value, "startup_up_delay", 0)
+  }
 
   agent {
     enabled = false
